@@ -1,28 +1,29 @@
+set Foreign_key_checks = 0;
 CREATE TABLE IF NOT EXISTS Book (
-    bookId VARCHAR(50) PRIMARY KEY,           -- Unique identifier for the book (e.g., ISBN or a unique ID)
-    title VARCHAR(255),                       -- Title of the book
-    location VARCHAR(255),                    -- Location of the book in the library
-    totalCopies INT,                          -- Total number of copies of the book available
-    totalBorrowed INT DEFAULT 0,              -- Total number of times the book has been borrowed
-    author VARCHAR(255),                      -- Author of the book
-    isbn VARCHAR(20) UNIQUE,                  -- ISBN of the book (must be unique)
-    genre VARCHAR(50)                         -- Genre of the book (e.g., Fiction, Non-Fiction)
+    id VARCHAR(50) PRIMARY KEY,           
+    title VARCHAR(255),                      
+    location VARCHAR(255),                   
+    totalCopies INT,                          
+    totalBorrowed INT DEFAULT 0,             
+    author VARCHAR(255),                     
+    isbn VARCHAR(20) UNIQUE,                 
+    genre VARCHAR(50)                         
 );
 
 CREATE TABLE IF NOT EXISTS Patron (
-    userId VARCHAR(50) PRIMARY KEY,           -- Unique identifier for the patron (user ID)
-    firstName VARCHAR(100),                   -- Patron's first name
-    lastName VARCHAR(100),                    -- Patron's last name
-    role VARCHAR(50),                         -- Role of the patron (e.g., 'member', 'guest', 'admin')
-    address VARCHAR(255),                     -- Patron's address
-    email VARCHAR(100),                       -- Patron's email address
-    phoneNumber VARCHAR(20),                  -- Patron's phone number
-    libraryCardId VARCHAR(50) UNIQUE          -- Unique ID for the patron's library card
+    userId VARCHAR(50) PRIMARY KEY,          
+    firstName VARCHAR(100),                  
+    lastName VARCHAR(100),                    
+    role VARCHAR(50),                         
+    address VARCHAR(255),                    
+    email VARCHAR(100),                       
+    phoneNumber VARCHAR(20),                  
+    libraryCardId VARCHAR(50) UNIQUE          
 );
 
 CREATE TABLE IF NOT EXISTS Librarian (
-    userId VARCHAR(50) PRIMARY KEY,           -- Unique identifier for the librarian (user ID)
-    firstName VARCHAR(100),                   -- Librarian's first name
+    userId VARCHAR(50) PRIMARY KEY,           
+    firstName VARCHAR(100),                  
     lastName VARCHAR(100),                    -- Librarian's last name
     password VARCHAR(255),                    -- Librarian's password (stored securely, hashed)
     role VARCHAR(50),                         -- Role of the librarian (e.g., 'staff', 'admin')
@@ -53,3 +54,5 @@ CREATE TABLE IF NOT EXISTS CheckInTransaction (
     FOREIGN KEY (transactionId) REFERENCES BorrowingTransaction(transactionId),  -- Foreign key linking to BorrowingTransaction
     FOREIGN KEY (acceptedBy) REFERENCES Librarian(userId)  -- Foreign key linking to Librarian table
 );
+
+set Foreign_key_checks = 0;

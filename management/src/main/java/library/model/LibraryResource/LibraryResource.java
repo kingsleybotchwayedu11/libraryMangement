@@ -1,15 +1,25 @@
 package library.model.LibraryResource;
 
-public abstract class LibraryResource {
+import library.utils.databaseOperations.DatabaseOperationInterface;
+
+public abstract class LibraryResource implements DatabaseOperationInterface {
     // Resource attributes
     protected String title;               // The title of the resource (book, magazine, etc.)
     protected String location;            // Location of the resource in the library
     protected int totalCopies;            // Total number of copies available in the library
     protected int totalBorrowed;          // Tracks how many of the resource have been borrowed
-    protected String resourceType;        // Type of resource (book, magazine, etc.)
+    protected String resourceType;
+    protected String id;               // Type of resource (book, magazine, etc.)
 
     // Getter and Setter methods
-
+    LibraryResource(String id, String title, String location, int totalCopies, int totalBorrowed) {
+        this.title = title;
+        this.location = location;
+        this.totalCopies = totalCopies;
+        this.totalBorrowed = totalBorrowed;
+        this.id = id;
+        
+    }
     // Getter and Setter for title
     public String getTitle() {
         return title;
@@ -19,6 +29,9 @@ public abstract class LibraryResource {
         this.title = title;
     }
 
+    public String getId () {
+        return id;
+    }
     // Getter and Setter for location
     public String getLocation() {
         return location;
@@ -59,6 +72,7 @@ public abstract class LibraryResource {
     public int getRemainingCopies() {
         return totalCopies - totalBorrowed;
     }
+
 
     // toString method for easier logging/representation (optional)
     @Override

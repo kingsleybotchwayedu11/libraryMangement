@@ -3,8 +3,10 @@
  */
 
  package library.model.Users;
- 
- abstract class LibraryUser {
+
+import library.utils.databaseOperations.DatabaseOperationInterface;
+
+abstract class LibraryUser /*implements DatabaseOperationInterface */ {
  
       protected String firstName;
       protected String lastName;

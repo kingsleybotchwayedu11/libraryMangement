@@ -1,3 +1,6 @@
+
+
+
 package library;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -6,7 +9,7 @@ import org.junit.jupiter.api.AfterAll;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import library.utils.*;
+import library.utils.databaseOperations.DatabaseConnection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +33,7 @@ class DatabaseConnectionTest {
     }
 
     @Test
-    void testConnectionNotNull() {
+    void testInsert() {
         // Test to ensure that the connection is not null (i.e., successfully connected)
         assertNotNull(connection, "The connection should be established successfully.");
     }

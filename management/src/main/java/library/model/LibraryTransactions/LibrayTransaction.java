@@ -3,8 +3,10 @@
  */
 
  package library.model.LibraryTransactions;
- 
- abstract class LibraryTransaction {
+
+import library.utils.databaseOperations.DatabaseOperationInterface;
+
+abstract class LibraryTransaction /*implements DatabaseOperationInterface */ {
  protected String id; // the id that uniquly identify transactions
  protected String type; //the type of transaction, weather borrowed or checkin
 
