@@ -69,6 +69,7 @@ class BookModelTest {
 
     @Test
     void checkDeleteFromDatabae()  throws SQLException{
+        testBook.saveToDatabase();
         boolean successfullyDeleted = testBook.deleteFromDatabase(); //delete
         String query = "SELECT * FROM Book where id = ?"; // try to select the deleted entry
         PreparedStatement st = databaseConnection.prepareStatement(query); 
