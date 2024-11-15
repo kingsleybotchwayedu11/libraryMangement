@@ -2,12 +2,17 @@ package library;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import com.mysql.cj.result.SqlDateValueFactory;
+
 import org.junit.jupiter.api.AfterAll;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
 
 import library.model.LibraryResource.Book;
 import library.utils.databaseOperations.DatabaseConnection;
@@ -25,7 +30,7 @@ class BookModelTest {
         testBook = new Book(
         UUID.randomUUID().toString(), 
         "test Book", "shelf 44", 50, 0, 
-        "Test  Uter", "uniq isb", "comedy");
+        "Test  Uter", UUID.randomUUID().toString(), "comedy");
         databaseConnection = DatabaseConnection.getConnection();
     }
 
@@ -35,6 +40,8 @@ class BookModelTest {
         if (testBook.getConnection() != null) {
             testBook.getConnection().close();  // Close the connection after tests
         }
+        //delete all test entries
+        testBook.deleteFromDatabase();
     }
 
     @Test
@@ -78,6 +85,23 @@ class BookModelTest {
         assertTrue(successfullyDeleted, "The book entry is deleted");
         assertFalse(dataFeedback.next(), "The should be no rows"); //ther should be no rows
     }
+    @Test 
+    void findByIdTest() throws SQLException {
+        testBook.saveToDatabase();
+        Book book = Book.getById(testBook.getId());
+        assertEquals(book.getTitle(), testBook.getTitle());
+        assertEquals(book.getId(), testBook.getId());
+    }
+   @Test
+   void findByAttribute() throws SQLException {
+    testBook.saveToDatabase(); //save the test booke entry in the database
+    //test for unkown column should return null
+    List<Book> book = Book.findByAttribute("unkownColumn", "unkown value");
+    //assertNull(book);
+    //test for know column
+    book = Book.findByAttribute("title", testBook.getTitle());
+    assertEquals(book.size(), 1);
+    assertEquals(book.get(0).getTitle(), testBook.getTitle());
 
-   
+   }
 }

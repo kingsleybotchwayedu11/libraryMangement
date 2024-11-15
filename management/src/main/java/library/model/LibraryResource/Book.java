@@ -37,7 +37,7 @@ public class Book  extends LibraryResource{
         return resultSet.next();
 
     }
-
+    @Override
     public boolean saveToDatabase() {
         try {
             PreparedStatement stmt;
@@ -82,7 +82,7 @@ public class Book  extends LibraryResource{
             }
         }
     
-
+    @Override
     public boolean deleteFromDatabase() {
         try {
         String sql = "DELETE FROM BOOK WHERE id = ?";
@@ -137,10 +137,9 @@ public class Book  extends LibraryResource{
                 return null;
             }
         try {
-           final String selectQuery = "SELECT * from Book where ? LIKE = ?";
+           final String selectQuery = "SELECT * FROM Book WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
-           dbEntryQuery.setString(1, attribute);
-           dbEntryQuery.setString(2, "%" + value + "%");
+           dbEntryQuery.setString(1, value);
            ResultSet bookEntry = dbEntryQuery.executeQuery();
            //check if there are rows
            while (bookEntry.next()) {
