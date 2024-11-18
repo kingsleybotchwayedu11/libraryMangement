@@ -33,7 +33,7 @@ public void setId(String id) {
 }
  
 protected boolean checkIfTransactionExists() throws Exception {
-    String selectQuery ="SELECT 1 FROM " + this.type + " WHERE transactionId = ?";
+    String selectQuery ="SELECT 1 FROM " + this.type + " WHERE id = ?";
     PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);
     checkIfExistQuery.setString(1, this.id); // Use the transactionId field of this instance
     ResultSet resultSet = checkIfExistQuery.executeQuery();

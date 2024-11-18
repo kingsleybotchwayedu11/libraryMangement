@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Book (
     totalBorrowed INT DEFAULT 0,             
     author VARCHAR(255),                     
     isbn VARCHAR(60) UNIQUE,                 
-    genre VARCHAR(50)                         
+    genre VARCHAR(60)
+    FOREIGN KEY (genre) REFERENCES Genre(name)                         
 );
 
 CREATE TABLE IF NOT EXISTS Patron (
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS BorrowingTransaction (
     issuedLibrarian VARCHAR(50),                 -- Librarian who issued the resource to the patron
     borrowedDate DATETIME,                           -- The DATETIME the item was borrowed
     expectedReturnDate DATETIME,                     -- The expected return DATETIME for the item
-	status ENUM("close", "overdue", "active") DEFAULT "active",   -- Whether the transaction is closed or still active
+	status VARCHAR(20) DEFAULT "active",   -- Whether the transaction is closed or still active
     FOREIGN KEY (borrowedResourceId) REFERENCES Book(id),  -- Foreign key linking to Book table
     FOREIGN KEY (patronMemberCardId) REFERENCES Patron(libraryCardId),  -- Foreign key linking to Patron table
     FOREIGN KEY (issuedLibrarian) REFERENCES Librarian(id)  -- Foreign key linking to Librarian table
@@ -51,5 +52,9 @@ CREATE TABLE IF NOT EXISTS CheckInTransaction (
     FOREIGN KEY (borrowedTransactionId) REFERENCES BorrowingTransaction(id),  -- Foreign key linking to BorrowingTransaction
     FOREIGN KEY (acceptedBy) REFERENCES Librarian(id)  -- Foreign key linking to Librarian table
 );
+
+CREATE TABLE IF NOT EXISTS Genre {
+    name VARCHAR(60) PRIMARY KEY;
+}
 
 set Foreign_key_checks = 0;

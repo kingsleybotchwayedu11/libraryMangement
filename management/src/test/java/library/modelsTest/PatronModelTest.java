@@ -1,4 +1,4 @@
-package library;
+package library.modelsTest;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -64,22 +64,22 @@ class PatronModelTest {
         assertEquals(patrons.size(), 1);   
     }
     
-   /*  @Test
+   @Test
     void checkUpdate() throws SQLException {
 
         // Test to ensure the book is saved in the database
         String updatedName = "Kingsley Test";
-        testPatron.saveToDatabase();
+        testPatron.saveToDatabase(); //ensure information is saved before
+        testPatron.setName(updatedName); //update information in object
+        boolean isUPdated = testPatron.saveToDatabase(); //save changes to database;
         String query = "SELECT * FROM Patron WHERE id = ?";
         PreparedStatement pr = databaseConnection.prepareStatement(query);
         pr.setString(1, testPatron.getId());
         ResultSet st = pr.executeQuery();
         st.next();
         assertEquals(updatedName, st.getString("name"));
-        testPatron.setName(updatedName);
-        boolean isUPdated = testPatron.saveToDatabase();
         assertTrue(isUPdated); //information must exist
     }
     
-    */
+    
 }

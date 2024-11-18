@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import library.controllers.StatusReport;
 import library.model.LibraryResource.LibraryResource;
 import library.model.Users.*;
 import library.utils.databaseOperations.DatabaseConnection;
@@ -12,6 +13,7 @@ import library.utils.databaseOperations.DatabaseConnection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BorrowTransaction extends LibraryTransaction {
     // The borrowed item (book, magazine, or other resources)
@@ -168,6 +170,32 @@ public class BorrowTransaction extends LibraryTransaction {
         return overdueTransactions;
     }
 
+    public static List<BorrowTransaction> getUserBorrowBook(String resourceid, String memberCardID) {
+        List<BorrowTransaction> overdueTransactions = new ArrayList<>();
+        try {
+            // Correct the query with proper LIKE pattern
+            String query =  "SELECT * FROM BorrowingTransaction WHERE borrowedResourceId LIKE ? AND patronMemberCardId LIKE ? AND status = 'active'";
+            
+            // Prepare the statement
+            PreparedStatement stm = DatabaseConnection.getConnection().prepareStatement(query);
+            
+            // Set the parameters with the LIKE pattern
+            stm.setString(1, "%" + resourceid + "%");  // Add % before and after the value
+            stm.setString(2, "%" + memberCardID + "%"); // Add % before and after the value
+            
+            // Execute the query
+            ResultSet overdueEntries = stm.executeQuery();
+            
+            // Loop through the results and add to the list
+            while (overdueEntries.next()) {
+                overdueTransactions.add(formBorrowTransactionObject(overdueEntries));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return overdueTransactions;
+    }
+    
     public boolean checkIfOverdue() {
         //check if account object is overdue
         return LocalDateTime.now().isBefore(this.expectedReturnDate);
@@ -186,4 +214,7 @@ public class BorrowTransaction extends LibraryTransaction {
         }
         return null;
     }
+
+     
+   
 }

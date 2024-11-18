@@ -17,14 +17,12 @@ import java.util.UUID;
 import library.utils.databaseOperations.DatabaseConnection;
 
 public class Book  extends LibraryResource{
-    private String isbn;
     private String genre;
     private String author;
     
-    public Book(String id, String title, String location, int totalCopies, int totalBorrowed, String author, String isbn, String genre) {
+    public Book(String id, String title, String location, int totalCopies, int totalBorrowed, String author,  String genre) {
         super(id, title, location, totalCopies, totalBorrowed);
         this.author = author;
-        this.isbn = isbn;
         this.genre = genre;
         this.resourceType = "book";  // Default value for resource type
     }
@@ -46,7 +44,7 @@ public class Book  extends LibraryResource{
             if(bookIsAlreadySaved) {
                 //execute update query
                 String updateSQL = "UPDATE Book " +
-                               "SET title = ?, location = ?, totalCopies = ?, totalBorrowed = ?, author = ?, isbn = ?, genre = ? " +
+                               "SET title = ?, location = ?, totalCopies = ?, totalBorrowed = ?, author = ?,  genre = ? " +
                                 "WHERE id = ?";
                 stmt = this.getConnection().prepareStatement(updateSQL);
                     // bookId
@@ -55,13 +53,12 @@ public class Book  extends LibraryResource{
                 stmt.setInt(3,    this.totalCopies);   // totalCopies
                 stmt.setInt(4,    this.totalBorrowed); // totalBorrowed
                 stmt.setString(5, this.author);     // author
-                stmt.setString(6, this.isbn);       // isbn
-                stmt.setString(7, this.genre);
-                stmt.setString(8, this.id); 
+                stmt.setString(6, this.genre);
+                stmt.setString(7, this.id); 
             } else {
                 //insert book
-                String insertSQL = "INSERT INTO Book (id, title, location, totalCopies, totalBorrowed, author, isbn, genre) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String insertSQL = "INSERT INTO Book (id, title, location, totalCopies, totalBorrowed, author,  genre) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 stmt = this.getConnection().prepareStatement(insertSQL);
                 stmt.setString(1, this.id);     // bookId
                 stmt.setString(2, this.title);      // title
@@ -69,8 +66,7 @@ public class Book  extends LibraryResource{
                 stmt.setInt(4,    this.totalCopies);   // totalCopies
                 stmt.setInt(5,    this.totalBorrowed); // totalBorrowed
                 stmt.setString(6, this.author);     // author
-                stmt.setString(7, this.isbn);       // isbn
-                stmt.setString(8, this.genre);
+                stmt.setString(7, this.genre);
             }
            //execute statement
            int affectedRows = stmt.executeUpdate();
@@ -105,7 +101,6 @@ public class Book  extends LibraryResource{
                         rst.getInt("totalCopies"),
                         rst.getInt("totalBorrowed"),
                         rst.getString("author"),
-                        rst.getString("isbn"),
                         rst.getString("genre"));
     }
     public static Book getById(String id) {
@@ -130,7 +125,7 @@ public class Book  extends LibraryResource{
     public static List<Book> findByAttribute(String attribute, String value) {
         //get connectoin
         ArrayList<Book> books = new ArrayList<>();
-        List<String> acceptedAttributes = Arrays.asList("author", "title", "isbn", "location");
+        List<String> acceptedAttributes = Arrays.asList("author", "title", "location", "genre");
         if(!acceptedAttributes.contains(attribute))
             {
                 System.out.println("Wrong attribute");
@@ -152,7 +147,7 @@ public class Book  extends LibraryResource{
         }
         return books;
     }
-
+   
     public static List<Book> getAllBooks(){
         ArrayList<Book> books = new ArrayList<>();        
         try {
@@ -170,4 +165,6 @@ public class Book  extends LibraryResource{
         }
         return books;
     }
+
+    
 }

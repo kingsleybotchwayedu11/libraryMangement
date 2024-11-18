@@ -1,4 +1,4 @@
-package library;
+package library.modelsTest;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import java.util.List;
 
 
 import library.model.LibraryResource.Book;
+import library.model.LibraryResource.Genre;
 import library.utils.databaseOperations.DatabaseConnection;
 import java.util.UUID;
 
@@ -23,14 +24,17 @@ class BookModelTest {
 
     private static Book testBook; 
     private static Connection databaseConnection;
+    private static Genre fiction;
     // This method will be run before any tests are executed
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        // Establish the connection before the tests run
+        // Establish the connection before the tests ru
+        fiction = new Genre("fiction");
+        fiction.saveToDatabase();
         testBook = new Book(
         UUID.randomUUID().toString(), 
         "test Book", "shelf 44", 50, 0, 
-        "Test  Uter", UUID.randomUUID().toString(), "comedy");
+        "Test  Uter",  fiction.getName());
         databaseConnection = DatabaseConnection.getConnection();
     }
 
@@ -42,6 +46,7 @@ class BookModelTest {
         }
         //delete all test entries
         testBook.deleteFromDatabase();
+        fiction.deleteFromDatabase();
     }
 
     @Test

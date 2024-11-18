@@ -4,5 +4,6 @@ module library {
     requires java.sql;
 
     opens library to javafx.fxml;
+    opens library.views to javafx.fxml;
     exports library;
 }

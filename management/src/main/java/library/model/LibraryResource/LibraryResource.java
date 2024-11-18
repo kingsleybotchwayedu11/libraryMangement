@@ -21,8 +21,18 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
         
     }
     // Getter and Setter for title
+    public boolean isAvailable() {
+        return this.totalBorrowed < this.totalCopies;
+    }
     public String getTitle() {
         return title;
+    }
+    public void incrementTotalBorrowed(){
+        totalBorrowed += 1;
+    }
+
+    public void decrementTotalBorrowed(){
+        totalBorrowed -= 1;
     }
 
     public void setTitle(String title) {

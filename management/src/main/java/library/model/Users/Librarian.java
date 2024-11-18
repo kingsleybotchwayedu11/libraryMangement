@@ -26,6 +26,10 @@ public class Librarian extends LibraryUser {
     public String getUserName() {
         return userName;
     }
+    // Getter and Setter for userName
+    public String getPassword() {
+        return this.password;
+    }
     
     public void setUserName(String userName) {
         this.userName = userName;
@@ -51,7 +55,7 @@ public class Librarian extends LibraryUser {
             } else {
                 // Insert new librarian
                 String insertSQL = "INSERT INTO Librarian (id, name, password, address, email, phoneNumber, userName) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 stmt = this.getConnection().prepareStatement(insertSQL);
                 stmt.setString(1, this.id);             // id
                 stmt.setString(2, this.name);           // name
@@ -70,12 +74,12 @@ public class Librarian extends LibraryUser {
         }
         return false;
     }
-    static Librarian formLibrarianObject(ResultSet res) {
+    static Librarian formLibrarianObject(ResultSet res)  throws SQLException{
         return new Librarian(res.getString("id"), res.getString("name"), res.getString("address"), res.getString("email"), 
-        res.getString("phoneNumber"), , null)
+        res.getString("phoneNumber"),res.getString("userName"), res.getString("password") );
     }
     
-    public static Patron findOne(String attribute, String value) {
+    public static Librarian findOne(String attribute, String value) {
         //get connectoin
         List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "userName");
         if(!acceptedAttributes.contains(attribute))
@@ -90,7 +94,7 @@ public class Librarian extends LibraryUser {
            ResultSet libarianEntry = dbEntryQuery.executeQuery();
            //check if there are rows
            if (libarianEntry.next()) {
-                return formPatronObject(patronEntries);
+                return formLibrarianObject(libarianEntry);
            }
         } catch(SQLException ex) {
         ex.printStackTrace();

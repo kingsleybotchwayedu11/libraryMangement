@@ -39,7 +39,7 @@ public class CheckInTransaction extends LibraryTransaction {
                 stmt.setString(4, this.id);
             } else {
                 // Insert new check-in transaction
-                String insertSQL = "INSERT INTO CheckInTransaction (id, transactionId, checkInDate, acceptedBy) " +
+                String insertSQL = "INSERT INTO CheckInTransaction (id, borrowedTransactionId, checkInDate, acceptedBy) " +
                         "VALUES (?, ?, ?, ?)";
                 stmt = this.getConnection().prepareStatement(insertSQL);
                 stmt.setString(1, this.id);
@@ -56,6 +56,7 @@ public class CheckInTransaction extends LibraryTransaction {
         return false;
     }
 
+    
     
    
 }
