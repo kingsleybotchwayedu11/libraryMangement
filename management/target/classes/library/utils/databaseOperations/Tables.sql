@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Book (
     totalBorrowed INT DEFAULT 0,             
     author VARCHAR(255),                     
     isbn VARCHAR(60) UNIQUE,                 
-    genre VARCHAR(60)
+    genre VARCHAR(60),
     FOREIGN KEY (genre) REFERENCES Genre(name)                         
 );
 
@@ -53,8 +53,8 @@ CREATE TABLE IF NOT EXISTS CheckInTransaction (
     FOREIGN KEY (acceptedBy) REFERENCES Librarian(id)  -- Foreign key linking to Librarian table
 );
 
-CREATE TABLE IF NOT EXISTS Genre {
-    name VARCHAR(60) PRIMARY KEY;
-}
+CREATE TABLE IF NOT EXISTS Genre (
+    name VARCHAR(60) PRIMARY KEY
+);
 
 set Foreign_key_checks = 0;

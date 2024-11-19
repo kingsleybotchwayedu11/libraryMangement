@@ -37,7 +37,7 @@ public class Patron extends LibraryUser {
     public static List<Patron> findByAttribute(String attribute, String value) {
         //get connectoin
         List<Patron> patrons = new ArrayList<>();
-        List<String> acceptedAttributes = Arrays.asList("id", "name");
+        List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "address", "libraryCardId", "phoneNumber");
         if(!acceptedAttributes.contains(attribute))
             {
                 System.out.println("Wrong attribute");
@@ -46,7 +46,7 @@ public class Patron extends LibraryUser {
         try {
            final String selectQuery = "SELECT * FROM Patron WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
-           dbEntryQuery.setString(1, value);
+           dbEntryQuery.setString(1, "%" + value + "%");
            ResultSet patronEntries = dbEntryQuery.executeQuery();
            //check if there are rows
            while (patronEntries.next()) {
@@ -62,7 +62,7 @@ public class Patron extends LibraryUser {
 
     public static Patron findOne(String attribute, String value) {
         //get connectoin
-        List<String> acceptedAttributes = Arrays.asList("id", "name", "email");
+        List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "libraryCardId");
         if(!acceptedAttributes.contains(attribute))
             {
                 System.out.println("Wrong attribute");

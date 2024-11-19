@@ -3,6 +3,7 @@ package library.controllers;
 
 import java.time.LocalDateTime;
 
+import library.model.LibraryResource.Book;
 import library.model.LibraryResource.LibraryResource;
 import library.model.LibraryTransactions.BorrowTransaction;
 import library.model.LibraryTransactions.CheckInTransaction;
@@ -15,8 +16,15 @@ import java.util.List;
 
 public class TransactionController {
 
-     static StatusReport borrowResource(LibraryResource book, Patron patron, Librarian libarian, LocalDateTime expectedReutnrDate) {
+     public static StatusReport borrowResource(String bookId, String patronMemId, Librarian libarian, LocalDateTime expectedReutnrDate) {
         //check book
+        Book book = Book.getById(bookId);
+        if(book == null) {
+            return new StatusReport(false, "Book not found");
+        } 
+        Patron patron = Patron.findOne("libraryCardId", patronMemId);
+        if(patron == null)
+            return new StatusReport(false, "Patron not found, check the member id");
         
         //check if book is available
         if(!book.isAvailable()) {

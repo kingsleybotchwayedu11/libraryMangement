@@ -5,7 +5,7 @@ import java.util.*;
 public class BooksController {
 /** handles book functions*/
     //get all availabble books
-    public StatusReport uploadBook(String title, String location, int totalCopies, String author, String genre ) {
+    public static StatusReport uploadBook(String title, String location, int totalCopies, String author, String genre ) {
         Book newBook = new Book(UUID.randomUUID().toString(), title, location, totalCopies, 0, author, genre.toLowerCase());
         return newBook.saveToDatabase() ? 
         new StatusReport(true, "book saved successfully", newBook) : 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.views.AddBookController">
+   <children>
+      <AnchorPane prefHeight="50.0" prefWidth="720.0" style="-fx-background-color: #388fff;">
+         <children>
+            <Label layoutX="249.0" layoutY="6.0" prefHeight="38.0" prefWidth="202.0" style="-fx-text-fill: FFFFFF;" text="Add Book">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="115.0" layoutY="142.0" prefHeight="24.0" prefWidth="102.0" text="Title" />
+      <TextField fx:id="title" layoutX="115.0" layoutY="166.0" prefHeight="26.0" prefWidth="407.0" promptText="Title Of Book" />
+      <Label layoutX="115.0" layoutY="192.0" prefHeight="24.0" prefWidth="102.0" text="Author Name" />
+      <TextField fx:id="author" layoutX="115.0" layoutY="216.0" prefHeight="26.0" prefWidth="407.0" promptText="William Shakespear" />
+      <Label layoutX="115.0" layoutY="246.0" prefHeight="24.0" prefWidth="102.0" text="Location" />
+      <TextField fx:id="locationBook" layoutX="115.0" layoutY="270.0" prefHeight="26.0" prefWidth="407.0" promptText="Shelf A7 B" />
+      <Label layoutX="115.0" layoutY="296.0" prefHeight="24.0" prefWidth="102.0" text="Total Coppies" />
+      <Button fx:id="Add" layoutX="112.0" layoutY="411.0" mnemonicParsing="false" onAction="#addBook" prefHeight="26.0" prefWidth="182.0" text="Add" />
+      <Button fx:id="clear" layoutX="340.0" layoutY="411.0" mnemonicParsing="false" onAction="#clearInput" prefHeight="26.0" prefWidth="182.0" text="Clear" />
+      <TextArea fx:id="report" layoutX="112.0" layoutY="447.0" prefHeight="57.0" prefWidth="414.0" visible="false" />
+      <TextField fx:id="totalCoppies" layoutX="115.0" layoutY="320.0" prefHeight="26.0" prefWidth="407.0" promptText="70" />
+      <ImageView fx:id="bookPic" fitHeight="111.0" fitWidth="120.0" layoutX="249.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@R.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="115.0" layoutY="346.0" prefHeight="24.0" prefWidth="102.0" text="Genre" />
+      <ChoiceBox fx:id="genre" layoutX="113.0" layoutY="370.0" prefHeight="25.0" prefWidth="407.0" visible="false" />
+      <ChoiceBox fx:id="genre" layoutX="115.0" layoutY="370.0" prefHeight="25.0" prefWidth="407.0" />
+   </children>
+</AnchorPane>

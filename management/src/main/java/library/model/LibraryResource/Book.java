@@ -35,6 +35,12 @@ public class Book  extends LibraryResource{
         return resultSet.next();
 
     }
+    public String getAuthor() {
+        return author;
+    }
+    public String getGenre() {
+        return genre;
+    }
     @Override
     public boolean saveToDatabase() {
         try {
@@ -125,7 +131,7 @@ public class Book  extends LibraryResource{
     public static List<Book> findByAttribute(String attribute, String value) {
         //get connectoin
         ArrayList<Book> books = new ArrayList<>();
-        List<String> acceptedAttributes = Arrays.asList("author", "title", "location", "genre");
+        List<String> acceptedAttributes = Arrays.asList("id", "title", "location", "genre");
         if(!acceptedAttributes.contains(attribute))
             {
                 System.out.println("Wrong attribute");
@@ -134,7 +140,7 @@ public class Book  extends LibraryResource{
         try {
            final String selectQuery = "SELECT * FROM Book WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
-           dbEntryQuery.setString(1, value);
+           dbEntryQuery.setString(1, "%" + value + "%");
            ResultSet bookEntry = dbEntryQuery.executeQuery();
            //check if there are rows
            while (bookEntry.next()) {
