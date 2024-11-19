@@ -82,7 +82,7 @@ public class BorrowController {
             StatusReport transactionReppReport = TransactionController.borrowResource(borrowResource.getText(), patron.getText(), LibrarianSession.getLoggedInLibrarian(), expectedReturn);
             if(transactionReppReport.getOperationStatus()) {
                 BorrowTransaction currentTransaction = (BorrowTransaction) transactionReppReport.getOperationEntity();
-                repport.setText("Operation Successfull\nId:" + currentTransaction.getId());
+                repport.setText("Operation Successfull\nId:\t" + currentTransaction.getId());
                 repport.setVisible(true);
             } else {
                 repport.setText(transactionReppReport.getMessage());
