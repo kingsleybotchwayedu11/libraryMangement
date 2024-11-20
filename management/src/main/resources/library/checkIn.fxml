@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.screens.checkInController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.views.CheckInView">
    <children>
       <AnchorPane prefHeight="61.0" prefWidth="600.0" style="-fx-background-color: #388fff;">
          <children>
@@ -18,12 +17,11 @@
             </Label>
          </children>
       </AnchorPane>
-      <TextField fx:id="resourceId" layoutX="40.0" layoutY="115.0" prefHeight="34.0" prefWidth="291.0" promptText="Library Resource Id" />
-      <Label layoutX="40.0" layoutY="88.0" prefHeight="27.0" prefWidth="71.0" text="Resource Id" />
-      <TextField fx:id="patron" layoutX="40.0" layoutY="176.0" prefHeight="34.0" prefWidth="291.0" promptText="Patron Member Id" />
-      <Label layoutX="40.0" layoutY="149.0" prefHeight="27.0" prefWidth="124.0" text="Patron Memeber Id" />
-      <Button layoutX="40.0" layoutY="235.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Submit" />
-      <Button layoutX="206.0" layoutY="235.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="124.0" text="Close" />
-      <TextField fx:id="error" layoutX="339.0" layoutY="77.0" prefHeight="254.0" prefWidth="255.0" />
+      <TextField fx:id="transactionId" layoutX="40.0" layoutY="115.0" prefHeight="34.0" prefWidth="465.0" promptText="Transactin Id" />
+      <Label layoutX="40.0" layoutY="88.0" prefHeight="27.0" prefWidth="157.0" text="Transaction Id" />
+      <Button fx:id="submit" layoutX="40.0" layoutY="174.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="134.0" text="Submit" />
+      <Button layoutX="190.0" layoutY="174.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="157.0" text="clear" />
+      <TextField fx:id="report" layoutX="-2.0" layoutY="310.0" prefHeight="91.0" prefWidth="606.0" visible="false" />
+      <Button layoutX="357.0" layoutY="174.0" mnemonicParsing="false" onAction="#viewTransacions" prefHeight="25.0" prefWidth="147.0" text="View Transaction" />
    </children>
 </AnchorPane>

@@ -205,7 +205,7 @@ public class BorrowTransaction extends LibraryTransaction {
         try{
             String sql = "SELECT * FROM BorrowingTransaction WHERE id = ?";
             PreparedStatement st = DatabaseConnection.getConnection().prepareStatement(sql);
-            st.setString(1, sql);
+            st.setString(1, id);
             ResultSet entry = st.executeQuery();
             if(entry.next())
                 return formBorrowTransactionObject(entry);

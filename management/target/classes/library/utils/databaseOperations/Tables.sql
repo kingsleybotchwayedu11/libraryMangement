@@ -57,4 +57,25 @@ CREATE TABLE IF NOT EXISTS Genre (
     name VARCHAR(60) PRIMARY KEY
 );
 
+CREATE TABLE IF NOT EXISTS Reservation (
+    id VARCHAR(50) PRIMARY KEY,            -- Unique identifier for the check-in transaction
+    bookId VARCHAR(50),-- The ID of the borrowing transaction being closed
+    reservedDate DATETIME,
+    patronId varchar(50),-- The date the item was returned
+    expectedNumberOfDays int,                       -- The librarian who processed the check-in
+    FOREIGN KEY (bookId) REFERENCES Book(id),  -- Foreign key linking to BorrowingTransaction
+    FOREIGN KEY (patronId) REFERENCES Patron(libraryCardId)  -- Foreign key linking to Librarian table
+);
+
+INSERT INTO Genre (name) VALUES ('Fiction');
+INSERT INTO Genre (name) VALUES ('Non-Fiction');
+INSERT INTO Genre (name) VALUES ('Mystery');
+INSERT INTO Genre (name) VALUES ('Fantasy');
+INSERT INTO Genre (name) VALUES ('Romance');
+INSERT INTO Genre (name) VALUES ('Science Fiction');
+INSERT INTO Genre (name) VALUES ('Horror');
+INSERT INTO Genre (name) VALUES ('Biography');
+INSERT INTO Genre (name) VALUES ('Comedy');
+INSERT INTO Genre (name) VALUES ('Historical');
+
 set Foreign_key_checks = 0;

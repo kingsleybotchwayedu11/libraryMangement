@@ -3,7 +3,6 @@ package library.modelsTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mysql.cj.result.SqlDateValueFactory;
 
 import org.junit.jupiter.api.AfterAll;
 

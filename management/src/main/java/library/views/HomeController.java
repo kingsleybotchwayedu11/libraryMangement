@@ -114,7 +114,17 @@ public class HomeController {
 
     @FXML
     void viewBorrowStage() throws Exception {
-        BorrowController.displayStage();
+       BorrowController.displayStage();
+    }
+
+    @FXML
+    void displayCheckInStage() throws Exception{
+        CheckInView.displayStage();
+    }
+
+    @FXML
+    void showReserveStage() throws Exception {
+        ReservView.displayStage();
     }
     private String getDatabaseColumnName() {
             return attribute.getSelectionModel().getSelectedItem().toLowerCase();

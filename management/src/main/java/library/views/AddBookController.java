@@ -51,7 +51,7 @@ public class AddBookController {
     private static Stage addBookStage  = new Stage();
     
     static void displayStage() throws Exception {
-        Scene addBookScene = new Scene(App.loadFXML("addBook"), 720, 600);
+        Scene addBookScene = new Scene(App.loadFXML("addBook"));
         addBookStage.setTitle("Add Book Stage");
         addBookStage.setScene(addBookScene);
         addBookStage.show();

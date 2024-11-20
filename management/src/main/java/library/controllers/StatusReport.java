@@ -3,9 +3,9 @@ package library.controllers;
 
 public class  StatusReport {
 
-    private boolean opeartionStatus;
-    private String message;
-    private Object operationEntity;
+    private boolean opeartionStatus; //tracks operation success
+    private String message; // message for the cause
+    private Object operationEntity; // the entity of the operation
 
     public boolean getOperationStatus() {
         return opeartionStatus;

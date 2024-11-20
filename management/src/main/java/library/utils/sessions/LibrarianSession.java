@@ -2,9 +2,8 @@ package library.utils.sessions;
 import library.model.Users.Librarian;
 
 public class LibrarianSession {
-    private  static Librarian currentLibrarian; //current librarian
+    private  static Librarian currentLibrarian; //current login librarian
     
-    //static 
     public static void setLibrarian(Librarian logInLibrarian) {
         currentLibrarian = logInLibrarian;
     }
