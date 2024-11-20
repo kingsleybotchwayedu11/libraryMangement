@@ -143,7 +143,11 @@ public class TransactionController {
 
         // Save the reservation to the database.
         Boolean isSavedSuccessfully = reserve.saveToDatabase();
-        return isSavedSuccessfully ? new StatusReport(true, "Operation successful", reserve)
-                                   : new StatusReport(false, "Can't save to the database");
+        if(isSavedSuccessfully) {
+            BorrowingQue.addToQue(bookId, reserve.getId());
+            return new StatusReport(true, "Operation successful", reserve)
+        }else {
+            return new StatusReport(false, "Can't save to the database");
+        }
     }
 }
