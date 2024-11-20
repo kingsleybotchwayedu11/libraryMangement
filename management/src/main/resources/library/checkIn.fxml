@@ -19,9 +19,8 @@
       </AnchorPane>
       <TextField fx:id="transactionId" layoutX="40.0" layoutY="115.0" prefHeight="34.0" prefWidth="465.0" promptText="Transactin Id" />
       <Label layoutX="40.0" layoutY="88.0" prefHeight="27.0" prefWidth="157.0" text="Transaction Id" />
-      <Button fx:id="submit" layoutX="40.0" layoutY="174.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="134.0" text="Submit" />
-      <Button layoutX="190.0" layoutY="174.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="157.0" text="clear" />
+      <Button fx:id="submit" layoutX="40.0" layoutY="174.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="196.0" text="Submit" />
+      <Button layoutX="294.0" layoutY="174.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="211.0" text="clear" />
       <TextField fx:id="report" layoutX="-2.0" layoutY="310.0" prefHeight="91.0" prefWidth="606.0" visible="false" />
-      <Button layoutX="357.0" layoutY="174.0" mnemonicParsing="false" onAction="#viewTransacions" prefHeight="25.0" prefWidth="147.0" text="View Transaction" />
    </children>
 </AnchorPane>

@@ -40,7 +40,6 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="forgetPassword" layoutX="194.0" layoutY="302.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" style="-fx-background-color: FFFFF; -fx-font-weight: Bold; -fx-text-fill: #388fff;" text="Forget Password?" />
             <ImageView fitHeight="64.0" fitWidth="65.0" layoutX="89.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@R.png" />

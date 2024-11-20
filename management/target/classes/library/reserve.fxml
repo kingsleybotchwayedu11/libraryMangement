@@ -20,9 +20,8 @@
       <TextField fx:id="memberID" layoutX="40.0" layoutY="115.0" prefHeight="34.0" prefWidth="441.0" promptText="Member Id" />
       <Label layoutX="40.0" layoutY="88.0" prefHeight="27.0" prefWidth="157.0" text="Patron Member Id" />
       <Button fx:id="submit" layoutX="40.0" layoutY="297.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="134.0" text="Submit" />
-      <Button layoutX="184.0" layoutY="297.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="157.0" text="clear" />
+      <Button layoutX="323.0" layoutY="297.0" mnemonicParsing="false" onAction="#clear" prefHeight="26.0" prefWidth="157.0" text="clear" />
       <TextField fx:id="report" layoutX="-3.0" layoutY="337.0" prefHeight="68.0" prefWidth="606.0" />
-      <Button layoutX="368.0" layoutY="297.0" mnemonicParsing="false" onAction="#viewTransacions" prefHeight="25.0" prefWidth="114.0" text="View Transaction" />
       <TextField fx:id="daysOfBorrow" layoutX="40.0" layoutY="242.0" prefHeight="34.0" prefWidth="441.0" promptText="Should be greater than 0" />
       <Label layoutX="40.0" layoutY="210.0" prefHeight="27.0" prefWidth="248.0" text="Number of days to borrow (if available)" />
       <TextField fx:id="resourceId" layoutX="40.0" layoutY="176.0" prefHeight="34.0" prefWidth="441.0" promptText="Resource Id" />
