@@ -2,6 +2,10 @@ package library.views;
 
 import java.util.List;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -15,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import library.App;
 import library.model.Users.Patron;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class UserDetailsController {
     //hanling scenes
@@ -27,38 +33,44 @@ public class UserDetailsController {
         
     }
 
-    @FXML
-    private TextArea address;
-
-    @FXML
-    private ChoiceBox<String> attribute;
-
-    @FXML
-    private TextField email;
-
-    @FXML
-    private TextField memberId;
-
-    @FXML
-    private TextField name;
-
+   
+    
     @FXML
     private TextField report;
 
     @FXML
     private Button search;
 
-    @FXML
-    private TextField telephone;
-
-    @FXML
-    private AnchorPane formArea;
 
     @FXML
     private TextField value;
 
     @FXML
     private AnchorPane user;
+    @FXML
+    private TableColumn<Patron, String> address;
+
+    @FXML
+    private ChoiceBox<String> attribute;
+
+    @FXML
+    private TableColumn<Patron, String> email;
+
+    @FXML
+    private AnchorPane formArea;
+
+    @FXML
+    private TableColumn<Patron, String> memberCardId;
+
+    @FXML
+    private TableColumn<Patron, String> name;
+
+    @FXML
+    private TableView<Patron> table;
+
+    
+    @FXML
+    private TableColumn<Patron, String> telephone;
 
     @FXML
     void searchUser() {
@@ -69,19 +81,16 @@ public class UserDetailsController {
                 report.setText("No user Found");
                 report.setVisible(true);
                 user.setVisible(false);
+                table.setVisible(false);
             }else {
-                displayUserDetails(patrons.get(0));
-                user.setVisible(true);
+                displayUserDetails(patrons);
                 report.setVisible(false);
             }
         }
     }
-    private void displayUserDetails(Patron patron) {
-        name.setText(patron.getName());
-        email.setText(patron.getEmail());
-        telephone.setText(patron.getPhoneNumber());
-        memberId.setText(patron.getLibraryCardId());
-        address.setText(patron.getAddress());
+    private void displayUserDetails(List<Patron> patron) {
+        table.setItems(FXCollections.observableArrayList(patron));
+        table.setVisible(true);
     }
     private boolean validate() {
         String query = value.getText();
@@ -104,6 +113,12 @@ public class UserDetailsController {
         dropShadow.setRadius(10);
         dropShadow.setOffsetY(10);
         formArea.setEffect(dropShadow);
+        //for user details
+        address.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
+        name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        memberCardId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLibraryCardId()));
+        email.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLibraryCardId()));
+        telephone.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
     }
     private String getDatabaseColumnName() {

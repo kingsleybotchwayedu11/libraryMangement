@@ -1,7 +1,14 @@
 package library.views;
 
 import java.util.List;
+
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -13,34 +20,63 @@ import library.App;
 import library.model.LibraryResource.Book;
 import library.utils.sessions.LibrarianSession;
 import library.views.registerPatron.RegisterPatronController;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 public class HomeController {
     @FXML
     TextField query;
+   
+    //Book Specifi
     @FXML
-    TextField error;
-    //Book Specific
+    private TableColumn<Book, String> author;
+
     @FXML
-    AnchorPane book;
-    @FXML 
-    TextField resourceId;
+    private TableColumn<Book, String> title;
+
     @FXML
-    TextField title;
-    @FXML
-    TextField author;
-    @FXML
-    TextField totalCoppies;
-    @FXML
-    TextField shelfLocation;
-    @FXML
-    TextField borrowed;
-    @FXML
-    TextField status;
-    @FXML
-    Label librarianName;
+    private TableColumn<Book, Boolean> status;
     @FXML
     AnchorPane formArea;
     
+    
+    @FXML
+    private TextField error;
+
+    @FXML
+    private Label librarianName;
+
+    @FXML
+    private TableColumn<Book, String> bookLocation;
+
+    @FXML
+    private Button logOutButon;
+
+
+    @FXML
+    private Button registerPatron;
+
+    @FXML
+    private TableColumn<Book, String> resourceId;
+
+    @FXML
+    private Button search;
+
+    @FXML
+    private Button searchBook;
+
+    @FXML
+    private TableView<Book> table;
+
+    @FXML
+    private TableColumn<Book, Integer> totalAvailable;
+
+    @FXML
+    private TableColumn<Book, Integer> totalBorrowed;
+
+    @FXML
+    private TableColumn<Book, Integer> totalCopies;
+
+
 
     @FXML
     private void logOut() throws Exception {
@@ -51,17 +87,19 @@ public class HomeController {
     
 
 
-    private void displayBook(Book retrievedBook) {
-        resourceId.setText(retrievedBook.getId());
-        title.setText(retrievedBook.getTitle());
-        author.setText(retrievedBook.getAuthor());
-        totalCoppies.setText("" + retrievedBook.getTotalCopies());
-        shelfLocation.setText(retrievedBook.getLocation());
-        borrowed.setText("" + retrievedBook.getTotalBorrowed());
-        status.setText(retrievedBook.getTotalBorrowed() < retrievedBook.getTotalCopies() ? "availabe" : "not available");
-        book.setVisible(true);
-        error.setVisible(false);
+    private void displayBook(List<Book> books) {
+        if(books.size() == 0) {
+            table.setVisible(false);
+            error.setText("no books match query");
+            error.setVisible(true);
+        } else {
+            table.setItems(FXCollections.observableArrayList(books));
+            table.setVisible(true);
+            error.setText(" ");
+            error.setVisible(false);
+        }
     }
+
     @FXML //search the query
     private void searchBook(){
         if(query.getText().isEmpty()) {
@@ -75,7 +113,7 @@ public class HomeController {
                 error.setText("Book not found");
                 error.setVisible(true);
             } else {
-                displayBook(books.get(0));
+                displayBook(books);
             }
         }
     }
@@ -95,7 +133,7 @@ public class HomeController {
 
     @FXML
     void initialize() {
-        attribute.getItems().addAll("Title", "Id");
+        attribute.getItems().addAll("Title", "Id", "Genre");
         attribute.setValue("Title");
         //give drop shadow effect
         DropShadow dropShadow = new DropShadow();
@@ -105,6 +143,15 @@ public class HomeController {
         formArea.setEffect(dropShadow);
         librarianName.setText(LibrarianSession.getLoggedInLibrarian().getName().substring(0, 8));
 
+        //book columns
+        resourceId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
+        title.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        author.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAuthor()));
+        status.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().isAvailable() ? true : false));
+        bookLocation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+        totalAvailable.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRemainingCopies()).asObject());
+        totalBorrowed.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTotalBorrowed()).asObject());
+        totalCopies.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTotalCopies()).asObject());
     }
 
     @FXML
