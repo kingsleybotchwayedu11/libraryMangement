@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.controllers</a> &gt; <span class="el_source">TransactionController.java</span></div><h1>TransactionController.java</h1><pre class="source lang-java linenums">package library.controllers;
+
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+import library.model.LibraryResource.Book;
+import library.model.LibraryResource.LibraryResource;
+import library.model.LibraryTransactions.BorrowTransaction;
+import library.model.LibraryTransactions.CheckInTransaction;
+import library.model.LibraryTransactions.Reservation;
+import library.model.Users.Librarian;
+import library.model.Users.Patron;
+import library.utils.BorrowingQue.BorrowingQue;
+import library.utils.sessions.LibrarianSession;
+
+import java.util.UUID;
+import java.util.List;
+
+<span class="nc" id="L19">public class TransactionController {</span>
+
+    /**
+     * Handles the borrowing of a library resource.
+     * 
+     * @param bookId            The ID of the book to be borrowed.
+     * @param patronMemId       The ID of the patron borrowing the book.
+     * @param libarian          The librarian authorizing the transaction.
+     * @param expectedReutnrDate The expected return date for the book.
+     * @return A StatusReport indicating success or failure of the transaction.
+     */
+    public static StatusReport borrowResource(String bookId, String patronMemId, Librarian libarian, LocalDateTime expectedReutnrDate) throws SQLException {
+        // Retrieve the book by ID.
+<span class="nc" id="L32">        Book book = Book.getById(bookId);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (book == null) {</span>
+<span class="nc" id="L34">            return new StatusReport(false, &quot;Book not found&quot;);</span>
+        }
+
+        // Retrieve the patron by library card ID.
+<span class="nc" id="L38">        Patron patron = Patron.findOne(&quot;libraryCardId&quot;, patronMemId);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (patron == null) {</span>
+<span class="nc" id="L40">            return new StatusReport(false, &quot;Patron not found, check the member ID&quot;);</span>
+        }
+
+        // Check if the book is available.
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (!book.isAvailable()) {</span>
+            // If unavailable, add the patron to the borrowing queue.
+<span class="nc" id="L46">            return new StatusReport(false, &quot;Book not available, request added to pending list&quot;);</span>
+        } else {
+            // Create a new borrowing transaction object.
+<span class="nc" id="L49">            BorrowTransaction transaction = new BorrowTransaction(</span>
+<span class="nc" id="L50">                UUID.randomUUID().toString(), book.getId(), patron.getLibraryCardId(),</span>
+<span class="nc" id="L51">                LocalDateTime.now(), expectedReutnrDate,</span>
+<span class="nc" id="L52">                libarian.getId(), &quot;active&quot;</span>
+            );
+
+            // Save the transaction to the database.
+<span class="nc" id="L56">            boolean savedStatus = transaction.saveToDatabase();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (savedStatus) {</span>
+                // Update the book's borrowed count and save it to the database.
+<span class="nc" id="L59">                book.incrementTotalBorrowed();</span>
+<span class="nc" id="L60">                book.saveToDatabase();</span>
+<span class="nc" id="L61">                return new StatusReport(true, &quot;Transaction saved&quot;, transaction);</span>
+            } else {
+<span class="nc" id="L63">                return new StatusReport(false, &quot;Couldn't save information to the database&quot;);</span>
+            }
+        }
+    }
+
+    /**
+     * Handles the return of a borrowed library resource.
+     * 
+     * @param transactionId The ID of the borrowing transaction being closed.
+     * @return A StatusReport indicating success or failure of the return process.
+     */
+    public static StatusReport returnResource(String transactionId) throws SQLException{
+        // Retrieve the borrowing transaction by ID.
+<span class="nc" id="L76">        BorrowTransaction transactionBorrow = BorrowTransaction.getById(transactionId);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (transactionBorrow == null) {</span>
+<span class="nc" id="L78">            return new StatusReport(false, &quot;Transaction entry not found&quot;);</span>
+        }
+
+        // Retrieve the book associated with the transaction.
+<span class="nc" id="L82">        Book book = Book.getById(transactionBorrow.getBorrowedItem());</span>
+
+        // Retrieve the currently logged-in librarian.
+<span class="nc" id="L85">        Librarian lib = LibrarianSession.getLoggedInLibrarian();</span>
+
+        // Create a new check-in transaction.
+<span class="nc" id="L88">        CheckInTransaction transactionCheckin = new CheckInTransaction(</span>
+<span class="nc" id="L89">            UUID.randomUUID().toString(), lib.getId(), transactionBorrow.getId(), LocalDateTime.now()</span>
+        );
+
+        // Save the check-in transaction to the database.
+<span class="nc" id="L93">        Boolean checkinDetailsSaved = transactionCheckin.saveToDatabase();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (checkinDetailsSaved) {</span>
+            // Close the borrowing transaction and save it to the database.
+<span class="nc" id="L96">            transactionBorrow.setStatus(&quot;close&quot;);</span>
+<span class="nc" id="L97">            transactionBorrow.saveToDatabase();</span>
+
+            // Check if there are pending requests for the book in the queue.
+<span class="nc" id="L100">            String reservationId = BorrowingQue.getFirstPerson(book.getId());</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (reservationId != null) {</span>
+                // If a reservation exists, process borrowing for the next patron.
+<span class="nc" id="L103">                Reservation reservationDetails = Reservation.getById(reservationId);</span>
+<span class="nc" id="L104">                borrowResource(</span>
+<span class="nc" id="L105">                    reservationDetails.getBookId(),</span>
+<span class="nc" id="L106">                    reservationDetails.getPatronId(),</span>
+<span class="nc" id="L107">                    LibrarianSession.getLoggedInLibrarian(),</span>
+<span class="nc" id="L108">                    LocalDateTime.now().plusDays(reservationDetails.getExpectedNumberOfDays())</span>
+                );
+<span class="nc" id="L110">            } else {</span>
+                // If no reservations exist, update the book's borrowed count.
+<span class="nc" id="L112">                book.decrementTotalBorrowed();</span>
+<span class="nc" id="L113">                book.saveToDatabase();</span>
+            }
+<span class="nc" id="L115">            return new StatusReport(true, &quot;Process completed&quot;, transactionCheckin);</span>
+        } else {
+<span class="nc" id="L117">            return new StatusReport(false, &quot;Can't save check-in information to the database&quot;);</span>
+        }
+    }
+
+    /**
+     * Adds a reservation for a library resource.
+     * 
+     * @param bookId   The ID of the book to be reserved.
+     * @param memberId The ID of the patron making the reservation.
+     * @param days     The number of days the reservation is valid.
+     * @return A StatusReport indicating success or failure of the reservation.
+     */
+    public static StatusReport addReservation(String bookId, String memberId, int days) throws SQLException{
+        // Retrieve the book by ID.
+<span class="nc" id="L131">        Book book = Book.getById(bookId);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (book == null) {</span>
+<span class="nc" id="L133">            return new StatusReport(false, &quot;Can't find book&quot;);</span>
+        }
+
+        // Retrieve the patron by library card ID.
+<span class="nc" id="L137">        Patron patron = Patron.findOne(&quot;libraryCardId&quot;, memberId);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (patron == null) {</span>
+<span class="nc" id="L139">            return new StatusReport(false, &quot;Can't find patron&quot;);</span>
+        }
+
+        // Create a new reservation object.
+<span class="nc" id="L143">        Reservation reserve = new Reservation(UUID.randomUUID().toString(), bookId, memberId, LocalDateTime.now(), days);</span>
+
+        // Save the reservation to the database.
+<span class="nc" id="L146">        Boolean isSavedSuccessfully = reserve.saveToDatabase();</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if(isSavedSuccessfully) {</span>
+<span class="nc" id="L148">            BorrowingQue.addToQue(bookId, reserve.getId());</span>
+<span class="nc" id="L149">            return new StatusReport(true, &quot;Operation successful&quot;, reserve);</span>
+        }else {
+<span class="nc" id="L151">            return new StatusReport(false, &quot;Can't save to the database&quot;);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

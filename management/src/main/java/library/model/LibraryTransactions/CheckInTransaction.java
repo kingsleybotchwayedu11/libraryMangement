@@ -2,6 +2,7 @@ package library.model.LibraryTransactions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -22,10 +23,15 @@ public class CheckInTransaction extends LibraryTransaction {
             this.borrowedTransactionId = borrowedTranactionId;
             this.acceptedBy = acceptedBy;
     }
+    public void setAcceptedBy(String acceptedBy) {
+        this.acceptedBy = acceptedBy;
+    }
+    public String getAcceptedBy() {
+        return acceptedBy;
+    }
     @Override 
-    public boolean saveToDatabase() {
+    public boolean saveToDatabase() throws SQLException {
         PreparedStatement stmt;
-        try {
             // Check if the check-in transaction already exists
             boolean transactionExists = this.checkIfTransactionExists();
             
@@ -48,13 +54,9 @@ public class CheckInTransaction extends LibraryTransaction {
                 stmt.setString(4, this.acceptedBy);
             }
             // Execute the statement
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            stmt.executeUpdate();
+            return true;
         }
-        return false;
-    }
 
     
     

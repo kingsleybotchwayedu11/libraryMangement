@@ -2,6 +2,8 @@ package library.model.Users;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import library.utils.databaseOperations.DatabaseOperationInterface;
 
 abstract class LibraryUser implements DatabaseOperationInterface {
@@ -23,6 +25,7 @@ abstract class LibraryUser implements DatabaseOperationInterface {
         this.phoneNumber = phoneNumber;
     }
 
+    public LibraryUser() {}
     // Getter and Setter for name
     public String getName() {
         return name;
@@ -78,7 +81,7 @@ abstract class LibraryUser implements DatabaseOperationInterface {
     }
 
     // Method to check if user exists in the database
-    protected boolean checkIfUserExist() throws Exception {
+    protected boolean checkIfUserExist()  {
         String selectQuery = "SELECT 1 FROM " + this.role + " WHERE id = ?";
         PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);
         checkIfExistQuery.setString(1, this.id); // Use the transactionId field of this instance

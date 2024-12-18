@@ -1,6 +1,8 @@
 package library.views;
 
 
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -36,7 +38,7 @@ public class CheckInView {
      * @param event the triggered event
      */
     @FXML
-    void onSubmit() {
+    void onSubmit() throws SQLException {
         if (validate()) {
             // Process the check-in operation
             StatusReport transactionReport = TransactionController.returnResource(transactionId.getText());

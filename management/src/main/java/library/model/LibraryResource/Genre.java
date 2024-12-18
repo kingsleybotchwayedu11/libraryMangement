@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import library.utils.databaseOperations.DatabaseConnection;
 import library.utils.databaseOperations.DatabaseOperationInterface;
 
 public class Genre  implements DatabaseOperationInterface{
@@ -18,24 +19,6 @@ public class Genre  implements DatabaseOperationInterface{
         return this.name;
     }
 
-    boolean checkIfExists() {
-        try {
-            boolean checkIfSaved = this.checkIfExists();
-            if(checkIfSaved) 
-                return true;
-            
-            String query = "SELECT 1 FROM Genre WHERE name = ?";
-            PreparedStatement genrePreparedStatement = this.getConnection().prepareStatement(query);
-            genrePreparedStatement.setString(1, this.name);
-            ResultSet checkIfRows = genrePreparedStatement.executeQuery();
-            return checkIfRows.next();
-        } catch(SQLException err) {
-            err.printStackTrace();;
-        } catch(Exception ex) {
-            ex.printStackTrace();;
-        }
-        return false;
-    }
     @Override 
     public boolean saveToDatabase()  {
         try {
@@ -44,27 +27,36 @@ public class Genre  implements DatabaseOperationInterface{
         PreparedStatement genreDatabase = this.getConnection().prepareStatement(insertSQL);
         genreDatabase.setString(1, this.name);
         int result = genreDatabase.executeUpdate();
-        return result > 0;
+        return true;
         }catch(SQLException ex) {
-            ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
+            return false;
         }
-        return false;
+       
     }
+    public Genre() {};
 
     @Override 
-    public boolean deleteFromDatabase() {
-        try{
+    public boolean deleteFromDatabase() throws SQLException {
             String deletQuery = "DELETE FROM Genre WHERE name = ?";
             PreparedStatement deletPreparedStatement = this.getConnection().prepareStatement(deletQuery);
             deletPreparedStatement.setString(1, this.name);
-            int affectedRows = deletPreparedStatement.executeUpdate();
-            return affectedRows > 0;
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return true;
+            deletPreparedStatement.executeUpdate();
+            return true;
+
+    }
+
+    
+    public static Genre getGenre(String id) throws SQLException {
+            //get connectoin
+               final String selectQuery = "SELECT * from Genre where name = ?";
+               PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
+               dbEntryQuery.setString(1, id);
+               ResultSet genreEntry = dbEntryQuery.executeQuery();
+               //check if there are rows
+               if(genreEntry.next()) 
+                return new Genre(genreEntry.getString("name"));
+               return null; 
+        
     }
 
 }

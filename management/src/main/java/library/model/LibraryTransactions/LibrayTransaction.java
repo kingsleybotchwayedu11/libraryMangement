@@ -20,19 +20,11 @@ public String getId() {
     return id;
 }
 
-public void setType(String type) {
-    this.id = type;
-}
-
 public String getType() {
     return type;
 }
 
-public void setId(String id) {
-    this.id = id;
-}
- 
-protected boolean checkIfTransactionExists() throws Exception {
+protected boolean checkIfTransactionExists() throws SQLException {
     String selectQuery ="SELECT 1 FROM " + this.type + " WHERE id = ?";
     PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);
     checkIfExistQuery.setString(1, this.id); // Use the transactionId field of this instance
@@ -42,17 +34,14 @@ protected boolean checkIfTransactionExists() throws Exception {
 
 
 @Override 
-public boolean deleteFromDatabase() {
-    try {
+public boolean deleteFromDatabase() throws SQLException {
+
         String sql = "DELETE FROM " + this.type + " WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setString(1, this.id);
-        int affectedRows = stmt.executeUpdate();
-        return affectedRows >= 1 ? true : false;
-        }catch(Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        stmt.executeUpdate();
+        return  true;
+
     }
 
 }

@@ -24,8 +24,9 @@ public class Book  extends LibraryResource{
         this.genre = genre;
         this.resourceType = "book";  // Default value for resource type
     }
+    public Book() {};
 
-    private boolean checkIfBookExist() throws Exception {
+    private boolean checkIfBookExist() throws SQLException {
         final String selectQuery = "SELECT 1 from Book where id = ?";
         PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);
         checkIfExistQuery.setString(1, this.id);
@@ -40,8 +41,8 @@ public class Book  extends LibraryResource{
         return genre;
     }
     @Override
-    public boolean saveToDatabase() {
-        try {
+    public boolean saveToDatabase() throws SQLException{
+        
             PreparedStatement stmt;
             //check if book is already saved
             boolean bookIsAlreadySaved = checkIfBookExist();
@@ -73,27 +74,20 @@ public class Book  extends LibraryResource{
                 stmt.setString(7, this.genre);
             }
            //execute statement
-           int affectedRows = stmt.executeUpdate();
-           return affectedRows >= 1 ? true : false;
+           stmt.executeUpdate();
+           return true;
+        
     
-            }catch(Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
         }
     
     @Override
-    public boolean deleteFromDatabase() {
-        try {
+    public boolean deleteFromDatabase() throws SQLException{
         String sql = "DELETE FROM BOOK WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setString(1, this.id);
-        int affectedRows = stmt.executeUpdate();
-        return affectedRows >= 1 ? true : false;
-        }catch(Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        stmt.executeUpdate();
+        return true;
+        
     }
 
 
@@ -107,26 +101,19 @@ public class Book  extends LibraryResource{
                         rst.getString("author"),
                         rst.getString("genre"));
     }
-    public static Book getById(String id) {
+    public static Book getById(String id) throws SQLException {
         //get connectoin
-        try {
            final String selectQuery = "SELECT * from Book where id = ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            dbEntryQuery.setString(1, id);
            ResultSet bookEntry = dbEntryQuery.executeQuery();
            //check if there are rows
-           if(bookEntry.next()) {
+           if(bookEntry.next()) 
             return formBookObjec(bookEntry);
-           }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+           return null; 
     }
 
-    public static List<Book> findByAttribute(String attribute, String value) {
+    public static List<Book> findByAttribute(String attribute, String value) throws SQLException{
         //get connectoin
         ArrayList<Book> books = new ArrayList<>();
         List<String> acceptedAttributes = Arrays.asList("id", "title", "location", "genre");
@@ -135,7 +122,7 @@ public class Book  extends LibraryResource{
                 System.out.println("Wrong attribute");
                 return null;
             }
-        try {
+      
            final String selectQuery = "SELECT * FROM Book WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            dbEntryQuery.setString(1, "%" + value + "%");
@@ -144,17 +131,13 @@ public class Book  extends LibraryResource{
            while (bookEntry.next()) {
                 books.add(formBookObjec(bookEntry));
            }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        
         return books;
     }
    
-    public static List<Book> getAllBooks(){
+    public static List<Book> getAllBooks() throws SQLException{
         ArrayList<Book> books = new ArrayList<>();        
-        try {
+     
            final String selectQuery = "SELECT * FROM Book";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            ResultSet bookEntry = dbEntryQuery.executeQuery();
@@ -162,11 +145,7 @@ public class Book  extends LibraryResource{
            while (bookEntry.next()) {
                 books.add(formBookObjec(bookEntry));
            }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        
         return books;
     }
 

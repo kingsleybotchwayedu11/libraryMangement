@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.controllers</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package library.controllers;
+import library.model.Users.*;
+
+import java.sql.SQLException;
+import java.util.UUID;
+
+<span class="nc" id="L7">public class UserController {</span>
+     //access route for only admin use cases
+     static StatusReport registerLibarian(String name, String address, String email, String phoneNumber, String userName, String password )  throws SQLException{
+          //check if username exist
+<span class="nc" id="L11">          Librarian checiIfSaved  = Librarian.findOne(&quot;email&quot;, &quot;email&quot;);</span>
+<span class="nc bnc" id="L12" title="All 2 branches missed.">          if(checiIfSaved != null)</span>
+<span class="nc" id="L13">               return new StatusReport(false, &quot;user with the same email saved&quot;);</span>
+          //Get form pathron object
+<span class="nc" id="L15">          Librarian newLibrarian = new Librarian(UUID.randomUUID().toString(),name, address, email, phoneNumber, userName, password);</span>
+          //Save patron information to database
+<span class="nc" id="L17">          newLibrarian.saveToDatabase();</span>
+<span class="nc" id="L18">          return new StatusReport(true, &quot;successfully saved&quot;, newLibrarian);</span>
+     }
+
+
+     static public StatusReport registerPatron( String name,  String address, String email, String phoneNumber )  throws SQLException{
+          //check if patron with the same email exist
+<span class="nc" id="L24">          Patron patronSaved = Patron.findOne(&quot;email&quot;, email);</span>
+          //Get library member id
+<span class="nc bnc" id="L26" title="All 2 branches missed.">          if(patronSaved != null)</span>
+<span class="nc" id="L27">               return new StatusReport(false, &quot;User already saved&quot;);</span>
+<span class="nc" id="L28">          String libraryCardId = UUID.randomUUID().toString().replace(&quot;_&quot;, &quot;&quot;).substring(0,10); </span>
+          //Get form pathron object
+<span class="nc" id="L30">          Patron patron = new Patron(UUID.randomUUID().toString(),name, address, email, phoneNumber,libraryCardId);</span>
+          //Save patron information to database
+<span class="nc" id="L32">          boolean isSaved = patron.saveToDatabase();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">          return isSaved ? new StatusReport(true, &quot;patron saved&quot;, patron) : new StatusReport(false, &quot;couldn't save user&quot;); </span>
+     }
+
+     //login libarian
+     static public StatusReport  loginLibarian(String userName, String password) throws SQLException {
+          //fetch the libarian from the user database
+<span class="nc" id="L39">          Librarian libarian = Librarian.findOne(&quot;userName&quot;, userName);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">          if(libarian == null)</span>
+<span class="nc" id="L41">               return new StatusReport(false, &quot;libarian not registered&quot;);</span>
+          //check if passwords math
+<span class="nc bnc" id="L43" title="All 2 branches missed.">          if(!libarian.getPassword().equals(password)) </span>
+<span class="nc" id="L44">               return new StatusReport(false, &quot;passwords dont match&quot;);</span>
+<span class="nc" id="L45">          return new StatusReport(true, &quot;successfully login&quot;, libarian);</span>
+
+     }
+
+     
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseConnection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.utils.databaseOperations</a> &gt; <span class="el_source">DatabaseConnection.java</span></div><h1>DatabaseConnection.java</h1><pre class="source lang-java linenums">
+package library.utils.databaseOperations;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+<span class="fc" id="L9">public class DatabaseConnection {</span>
+    // Logger instance
+
+    // Database credentials and URL
+    private static final String DB_URL = &quot;jdbc:mysql://localhost:3306/test&quot;;  // Update with your DB URL
+    private static final String USER = &quot;root&quot;;  // Update with your DB username
+    private static final String PASSWORD = &quot;9%8%7521Ko^Ko^&quot;;  // Update with your DB password
+<span class="fc" id="L16">    public  static Connection connection = null;</span>
+
+    // Method to establish and return a database connection
+    public static  Connection getConnection() throws SQLException {
+            // Step 1: Load and register JDBC driver
+           // Class.forName(&quot;com.mysql.cj.jdbc.Driver&quot;);  // For MySQL JDBC driver
+            
+            // Step 2: Establish the connection
+<span class="fc" id="L24">            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);</span>
+
+<span class="fc" id="L26">        return connection;</span>
+    }
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

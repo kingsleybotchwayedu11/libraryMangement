@@ -1,5 +1,6 @@
 package library.views;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import javafx.event.ActionEvent;
@@ -75,8 +76,9 @@ public class BorrowController {
         borrowTransactionStage.show();
     }
 
+
     @FXML
-    void add(ActionEvent event) {
+    void add(ActionEvent event) throws SQLException {
         if(validate()) {
             LocalDateTime expectedReturn = expectedReturnDate.getValue().atStartOfDay();
             StatusReport transactionReppReport = TransactionController.borrowResource(borrowResource.getText(), patron.getText(), LibrarianSession.getLoggedInLibrarian(), expectedReturn);
@@ -100,8 +102,8 @@ public class BorrowController {
     }
 
     @FXML
-    void viewTransactions(ActionEvent event) {
-
+    void viewTransactions(ActionEvent event)  throws Exception{
+        BorrowTransactionView.displayStage();
     }
 
 }

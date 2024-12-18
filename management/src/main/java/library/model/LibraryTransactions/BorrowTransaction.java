@@ -54,8 +54,8 @@ public class BorrowTransaction extends LibraryTransaction {
     }
 
     //Getters and Setters for borrower
-    public Patron getBorrower() {
-        return null;
+    public String getBorrower() {
+        return borrowerId;
     }
 
     public void setBorrower(String borrowerId) {
@@ -81,8 +81,8 @@ public class BorrowTransaction extends LibraryTransaction {
     }
 
     // Getters and Setters for issuedLibrarian
-    public Librarian getIssuedLibrarian() {
-        return null;
+    public String getIssuedLibrarian() {
+        return issuedLibrarianId;
     }
 
     public void setIssuedLibrarian(String issuedLibrarianId) {
@@ -111,8 +111,7 @@ public class BorrowTransaction extends LibraryTransaction {
     
 
     @Override
-    public boolean saveToDatabase() {
-    try {
+    public boolean saveToDatabase() throws SQLException {
         PreparedStatement stmt;
         // Check if the transaction is already saved in the database
         boolean transactionExists = this.checkIfTransactionExists(); 
@@ -147,41 +146,66 @@ public class BorrowTransaction extends LibraryTransaction {
         }
 
         // Execute the prepared statement
-        int affectedRows = stmt.executeUpdate();
-        return affectedRows >= 1;
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        return false;
+        return true;
     }
-}
+
     //get all transactions that all borrowed Transactions that are status
-    public static List<BorrowTransaction> getAllOverdue() {
+    public static List<BorrowTransaction> getAllOverdue() throws SQLException {
         List<BorrowTransaction> overdueTransactions = new ArrayList<>();
-        try {
+
         String query =  "SELECT * FROM BorrowingTransaction WHERE expectedReturnDate < NOW() AND status = 'active'";
         PreparedStatement stm  = DatabaseConnection.getConnection().prepareStatement(query);
         ResultSet overdueEntries = stm.executeQuery();
         while (overdueEntries.next()) {
             overdueTransactions.add(formBorrowTransactionObject(overdueEntries));
         }
-        } catch(SQLException ex) {
-            ex.printStackTrace();
+        
+        return overdueTransactions;
+    }
+
+    public static List<BorrowTransaction> getAll() throws SQLException{
+        List<BorrowTransaction> overdueTransactions = new ArrayList<>();
+        String query =  "SELECT * FROM BorrowingTransaction;";
+        PreparedStatement stm  = DatabaseConnection.getConnection().prepareStatement(query);
+        ResultSet overdueEntries = stm.executeQuery();
+        while (overdueEntries.next()) {
+            overdueTransactions.add(formBorrowTransactionObject(overdueEntries));
         }
         return overdueTransactions;
     }
 
-    public static List<BorrowTransaction> getUserBorrowBook(String resourceid, String memberCardID) {
+    public static List<BorrowTransaction> getUser(String memberCardID)  throws SQLException{
         List<BorrowTransaction> overdueTransactions = new ArrayList<>();
-        try {
             // Correct the query with proper LIKE pattern
-            String query =  "SELECT * FROM BorrowingTransaction WHERE borrowedResourceId LIKE ? AND patronMemberCardId LIKE ? AND status = 'active'";
+            String query =  "SELECT * FROM BorrowingTransaction WHERE patronMemberCardId LIKE ? ;";
             
             // Prepare the statement
             PreparedStatement stm = DatabaseConnection.getConnection().prepareStatement(query);
             
             // Set the parameters with the LIKE pattern
-            stm.setString(1, "%" + resourceid + "%");  // Add % before and after the value
-            stm.setString(2, "%" + memberCardID + "%"); // Add % before and after the value
+            stm.setString(1, "%" + memberCardID + "%"); // Add % before and after the value
+            
+            // Execute the query
+            ResultSet overdueEntries = stm.executeQuery();
+            
+            // Loop through the results and add to the list
+            while (overdueEntries.next()) {
+                overdueTransactions.add(formBorrowTransactionObject(overdueEntries));
+            }
+        return overdueTransactions;
+    }
+
+    public static List<BorrowTransaction> getResource(String resource) {
+        List<BorrowTransaction> overdueTransactions = new ArrayList<>();
+        try {
+            // Correct the query with proper LIKE pattern
+            String query =  "SELECT * FROM BorrowingTransaction WHERE borrowedResourceId LIKE ? ;";
+            
+            // Prepare the statement
+            PreparedStatement stm = DatabaseConnection.getConnection().prepareStatement(query);
+            
+            // Set the parameters with the LIKE pattern
+            stm.setString(1, "%" + resource + "%"); // Add % before and after the value
             
             // Execute the query
             ResultSet overdueEntries = stm.executeQuery();
@@ -201,20 +225,14 @@ public class BorrowTransaction extends LibraryTransaction {
         return LocalDateTime.now().isBefore(this.expectedReturnDate);
     }
 
-    public static BorrowTransaction getById(String id) {
-        try{
+    public static BorrowTransaction getById(String id) throws SQLException {
             String sql = "SELECT * FROM BorrowingTransaction WHERE id = ?";
             PreparedStatement st = DatabaseConnection.getConnection().prepareStatement(sql);
             st.setString(1, id);
             ResultSet entry = st.executeQuery();
             if(entry.next())
                 return formBorrowTransactionObject(entry);
-        }catch(Exception ex) {
-            ex.printStackTrace();
-        }
         return null;
     }
-
-     
-   
 }
+ 

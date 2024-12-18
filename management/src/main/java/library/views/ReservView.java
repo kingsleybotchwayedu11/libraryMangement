@@ -1,5 +1,7 @@
 package library.views;
 
+import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -68,7 +70,7 @@ public class ReservView {
      * @param event the triggered event
      */
     @FXML
-    void onSubmit(ActionEvent event) {
+    void onSubmit(ActionEvent event) throws SQLException {
         if (validate()) {
             int days = Integer.parseInt(daysOfBorrow.getText());
             

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckInTransaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.model.LibraryTransactions</a> &gt; <span class="el_source">CheckInTransaction.java</span></div><h1>CheckInTransaction.java</h1><pre class="source lang-java linenums">package library.model.LibraryTransactions;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+
+public class CheckInTransaction extends LibraryTransaction {
+    // The borrowed item (book, magazine, or other resources)
+    private String borrowedTransactionId;
+    
+    // The day the book wast returned
+    private LocalDateTime checkInDate;
+    
+    //The patron who accepted the book
+    private String acceptedBy;
+    
+    public CheckInTransaction(String id, String acceptedBy, String borrowedTranactionId, LocalDateTime checkInDate) {
+<span class="fc" id="L21">            super(id, &quot;CheckInTransaction&quot;);</span>
+<span class="fc" id="L22">            this.checkInDate =  checkInDate;</span>
+<span class="fc" id="L23">            this.borrowedTransactionId = borrowedTranactionId;</span>
+<span class="fc" id="L24">            this.acceptedBy = acceptedBy;</span>
+<span class="fc" id="L25">    }</span>
+    public void setAcceptedBy(String acceptedBy) {
+<span class="fc" id="L27">        this.acceptedBy = acceptedBy;</span>
+<span class="fc" id="L28">    }</span>
+    public String getAcceptedBy() {
+<span class="fc" id="L30">        return acceptedBy;</span>
+    }
+    @Override 
+    public boolean saveToDatabase() throws SQLException {
+        PreparedStatement stmt;
+            // Check if the check-in transaction already exists
+<span class="fc" id="L36">            boolean transactionExists = this.checkIfTransactionExists();</span>
+            
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            if (transactionExists) {</span>
+                // Update existing check-in transaction
+<span class="fc" id="L40">                String updateSQL = &quot;UPDATE CheckInTransaction SET borrowedTransactionId = ?, checkInDate = ?, acceptedBy = ? WHERE id = ?&quot;;</span>
+<span class="fc" id="L41">                stmt = this.getConnection().prepareStatement(updateSQL);</span>
+<span class="fc" id="L42">                stmt.setString(1, this.borrowedTransactionId);</span>
+<span class="fc" id="L43">                stmt.setTimestamp(2, Timestamp.valueOf(this.checkInDate));</span>
+<span class="fc" id="L44">                stmt.setString(3, this.acceptedBy);</span>
+<span class="fc" id="L45">                stmt.setString(4, this.id);</span>
+<span class="fc" id="L46">            } else {</span>
+                // Insert new check-in transaction
+<span class="fc" id="L48">                String insertSQL = &quot;INSERT INTO CheckInTransaction (id, borrowedTransactionId, checkInDate, acceptedBy) &quot; +</span>
+                        &quot;VALUES (?, ?, ?, ?)&quot;;
+<span class="fc" id="L50">                stmt = this.getConnection().prepareStatement(insertSQL);</span>
+<span class="fc" id="L51">                stmt.setString(1, this.id);</span>
+<span class="fc" id="L52">                stmt.setString(2, this.borrowedTransactionId);</span>
+<span class="fc" id="L53">                stmt.setTimestamp(3, Timestamp.valueOf(this.checkInDate));</span>
+<span class="fc" id="L54">                stmt.setString(4, this.acceptedBy);</span>
+            }
+            // Execute the statement
+<span class="fc" id="L57">            stmt.executeUpdate();</span>
+<span class="fc" id="L58">            return true;</span>
+        }
+
+    
+    
+   
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

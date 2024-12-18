@@ -63,9 +63,43 @@ class PatronModelTest {
         List<Patron> patrons = Patron.findByAttribute("name", testPatron.getName());
         assertEquals(patrons.size(), 1);   
     }
+
+    @Test 
+    void checkFindPathronsWrongID() throws SQLException {
+        testPatron.saveToDatabase();
+        List<Patron> patrons = Patron.findByAttribute("wrong column", testPatron.getName());
+        assertNull(patrons);   
+    }
+
+    @Test 
+    void findByAttributeExist() throws SQLException {
+        testPatron.saveToDatabase();
+        Patron patron = Patron.findOne("name", testPatron.getName());
+        assertNotNull(patron);  
+    }
+
+    @Test 
+    void findOneWrongColumn() throws SQLException {
+        testPatron.saveToDatabase();
+        Patron patron = Patron.findOne("wrongColume", testPatron.getName());
+        assertNull(patron);  
+    }
+    
+    @Test 
+    void findOneWrongcolumnNotExist() throws SQLException {
+        testPatron.saveToDatabase();
+        Patron patron = Patron.findOne("name", "wrong patron");
+        assertNull(patron);  
+    }
+    @Test
+    void setLibraryCardId() throws SQLException {
+        testPatron.setLibraryCardId("new card id");
+        assertEquals(testPatron.getLibraryCardId(), "new card id");
+    }
+    
     
    @Test
-    void checkUpdate() throws SQLException {
+    void checkUpdate() throws SQLException{
 
         // Test to ensure the book is saved in the database
         String updatedName = "Kingsley Test";
@@ -79,6 +113,19 @@ class PatronModelTest {
         st.next();
         assertEquals(updatedName, st.getString("name"));
         assertTrue(isUPdated); //information must exist
+    }
+
+    @Test
+    void testSetters()  {
+        assertNotNull(testPatron.getId());
+        assertEquals("Patron", testPatron.getRole());
+        testPatron.setEmail("kk@gmail.com");
+        testPatron.setPhoneNumber("0595960273");
+        testPatron.setAddress("new address");
+        assertEquals(testPatron.getEmail(), "kk@gmail.com");
+        assertEquals(testPatron.getAddress(), "new address");
+        assertEquals(testPatron.getPhoneNumber(), "0595960273");
+
     }
     
     

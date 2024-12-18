@@ -24,22 +24,17 @@ public class Reservation extends LibraryTransaction {
         this.expectedNumberOfDays = expectedNumberOfDays;
     }
 
-    // Getters and Setters
+   
+
+    
     public String getBookId() {
         return bookId;
     }
-
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
-    }
-
     public String getPatronId() {
         return patronId;
     }
 
-    public void setPatronId(String patronId) {
-        this.patronId = patronId;
-    }
+    
 
     public LocalDateTime getReservedDate() {
         return reservedDate;
@@ -69,8 +64,8 @@ public class Reservation extends LibraryTransaction {
     }
 
     @Override
-    public boolean saveToDatabase() {
-        try {
+    public boolean saveToDatabase() throws SQLException {
+      
             PreparedStatement stmt;
             boolean transactionExists = this.checkIfTransactionExists();
             
@@ -95,50 +90,38 @@ public class Reservation extends LibraryTransaction {
             }
 
             // Execute the prepared statement
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows >= 1;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        } catch(Exception ex){
-            return false;
-        }
+            stmt.executeUpdate();
+            return true;
     }
 
     // Method to get all active reservations
-    public static List<Reservation> getAllActiveReservations() {
+    public static List<Reservation> getAllActiveReservations() throws SQLException {
         List<Reservation> activeReservations = new ArrayList<>();
-        try {
+        
             String query = "SELECT * FROM Reservation WHERE reservedDate > NOW()";
             PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 activeReservations.add(formReservationObject(resultSet));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+     
         return activeReservations;
     }
 
     // Method to get a reservation by ID
-    public static Reservation getById(String id) {
-        try {
+    public static Reservation getById(String id) throws SQLException{
             String query = "SELECT * FROM Reservation WHERE id = ?";
             PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(query);
             stmt.setString(1, id);
             ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) 
                 return formReservationObject(resultSet);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+            
         return null;
     }
 
     //Reservation
-    public static List<Reservation> findByAttribute(String attribute, String value) {
+    public static List<Reservation> findByAttribute(String attribute, String value)  throws SQLException{
         // Define a list of accepted attributes that can be searched in the database
         List<String> acceptedAttributes = Arrays.asList("id", "bookId", "patronId", "reservedDate");
 
@@ -151,7 +134,6 @@ public class Reservation extends LibraryTransaction {
         // Initialize a list to hold the matching reservations
         List<Reservation> reservations = new ArrayList<>();
 
-        try {
             // Construct the SQL query using the provided attribute and value
             String selectQuery = "SELECT * FROM Reservation WHERE " + attribute + " LIKE ?";
             PreparedStatement stmt = DatabaseConnection.getConnection().prepareStatement(selectQuery);
@@ -165,11 +147,6 @@ public class Reservation extends LibraryTransaction {
                 // Add the reservation to the list
                 reservations.add(reservation);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();  // Handle SQL errors
-        } catch (Exception ex) {
-            ex.printStackTrace();  // Handle other exceptions
-        }
 
         // Return the list of reservations found
         return reservations;

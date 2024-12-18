@@ -19,6 +19,7 @@ import library.utils.databaseOperations.DatabaseConnection;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.booleanThat;
 class BookModelTest {
 
     private static Book testBook; 
@@ -95,6 +96,15 @@ class BookModelTest {
         Book book = Book.getById(testBook.getId());
         assertEquals(book.getTitle(), testBook.getTitle());
         assertEquals(book.getId(), testBook.getId());
+        assertEquals(book.getAuthor(), testBook.getAuthor());
+        assertEquals(book.getGenre(), testBook.getGenre());
+        assertEquals(book.getLocation(), testBook.getLocation());
+    }
+    @Test 
+    void getByIdNull() throws SQLException {
+        testBook.saveToDatabase();
+        Book book = Book.getById("wrong id");
+        assertNull(book, "checking if book is null");
     }
    @Test
    void findByAttribute() throws SQLException {
@@ -106,6 +116,44 @@ class BookModelTest {
     book = Book.findByAttribute("title", testBook.getTitle());
     assertEquals(book.size(), 1);
     assertEquals(book.get(0).getTitle(), testBook.getTitle());
+   }
+   
+   @Test 
+   void getAllBooks() throws SQLException {
+    testBook.deleteFromDatabase();
+    //book should be null
+    List<Book> noBooksEntry = Book.getAllBooks();
+    assertEquals(0, noBooksEntry.size());
+
+    testBook.saveToDatabase(); //save the test booke entry in the database
+    //test for unkown column should return null
+    List<Book> books = Book.getAllBooks();
+    assertEquals(1, books.size());
 
    }
+
+   @Test
+   void checkAvailable() throws SQLException {
+    testBook.incrementTotalBorrowed();
+    assertEquals(1, testBook.getTotalBorrowed());
+    assertEquals(49, testBook.getRemainingCopies());
+    testBook.decrementTotalBorrowed();
+
+    assertEquals(0, testBook.getTotalBorrowed());
+
+    assertNotNull(testBook.getLocation());
+    assertEquals("book", testBook.getResourceType());
+
+    testBook.saveToDatabase();
+    assertTrue(testBook.isAvailable());
+
+    testBook.setTotalBorrowed(testBook.getTotalCopies());
+    assertFalse(testBook.isAvailable());
+
+    testBook.setTotalBorrowed(testBook.getTotalCopies());
+    assertFalse(testBook.isAvailable());
+
+   }
+
+
 }

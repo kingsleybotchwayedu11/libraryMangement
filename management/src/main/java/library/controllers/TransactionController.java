@@ -1,5 +1,6 @@
 package library.controllers;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import library.model.LibraryResource.Book;
@@ -26,7 +27,7 @@ public class TransactionController {
      * @param expectedReutnrDate The expected return date for the book.
      * @return A StatusReport indicating success or failure of the transaction.
      */
-    public static StatusReport borrowResource(String bookId, String patronMemId, Librarian libarian, LocalDateTime expectedReutnrDate) {
+    public static StatusReport borrowResource(String bookId, String patronMemId, Librarian libarian, LocalDateTime expectedReutnrDate) throws SQLException {
         // Retrieve the book by ID.
         Book book = Book.getById(bookId);
         if (book == null) {
@@ -70,7 +71,7 @@ public class TransactionController {
      * @param transactionId The ID of the borrowing transaction being closed.
      * @return A StatusReport indicating success or failure of the return process.
      */
-    public static StatusReport returnResource(String transactionId) {
+    public static StatusReport returnResource(String transactionId) throws SQLException{
         // Retrieve the borrowing transaction by ID.
         BorrowTransaction transactionBorrow = BorrowTransaction.getById(transactionId);
         if (transactionBorrow == null) {
@@ -125,7 +126,7 @@ public class TransactionController {
      * @param days     The number of days the reservation is valid.
      * @return A StatusReport indicating success or failure of the reservation.
      */
-    public static StatusReport addReservation(String bookId, String memberId, int days) {
+    public static StatusReport addReservation(String bookId, String memberId, int days) throws SQLException{
         // Retrieve the book by ID.
         Book book = Book.getById(bookId);
         if (book == null) {

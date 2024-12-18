@@ -1,5 +1,6 @@
 package library.views;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javafx.beans.property.SimpleBooleanProperty;
@@ -73,7 +74,7 @@ public class UserDetailsController {
     private TableColumn<Patron, String> telephone;
 
     @FXML
-    void searchUser() {
+    void searchUser() throws SQLException {
         if(validate()) {
             String columnName = getDatabaseColumnName();
             List<Patron> patrons = Patron.findByAttribute(columnName, value.getText());

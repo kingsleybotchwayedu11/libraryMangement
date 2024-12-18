@@ -91,6 +91,13 @@ class ReservationModelTest {
         assertEquals(reservations.size(), 1, "There should be one reservation with the given bookId");
     }
 
+    @Test
+    void wrongAttribute() throws SQLException {
+        testReservation.saveToDatabase();
+        List<Reservation> reservations = Reservation.findByAttribute("wrongAttribute", testReservation.getBookId());
+        assertNull(reservations);
+    }
+
     // Test to check if a reservation can be updated in the database
     
 
@@ -109,5 +116,22 @@ class ReservationModelTest {
         Reservation foundReservation = Reservation.getById(testReservation.getId());
         assertNotNull(foundReservation, "Reservation should be found by ID");
         assertEquals(testReservation.getId(), foundReservation.getId(), "Found reservation ID should match the test reservation ID");
-    } 
+    }
+    
+     // Test to check if reservation can be found by its ID
+     @Test
+     void checkReservationWithWrongId() throws SQLException {
+         testReservation.saveToDatabase();
+         Reservation notFound = Reservation.getById("wrong id");
+         assertNull(notFound);
+     }
+
+    @Test
+    void getSetters() {
+        testReservation.setExpectedNumberOfDays(4);
+        var datenow = LocalDateTime.now().plusDays(20);
+        testReservation.setReservedDate(datenow);
+        testReservation.getReservedDate();
+        assertEquals(datenow, testReservation.getReservedDate());
+    }
 }

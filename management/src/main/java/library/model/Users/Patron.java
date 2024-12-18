@@ -25,7 +25,7 @@ public class Patron extends LibraryUser {
     }
 
     //Book
-    private static Patron formPatronObject(ResultSet res) throws Exception {
+    private static Patron formPatronObject(ResultSet res){
         return new Patron(res.getString("id"), res.getString("name"), res.getString("address"), res.getString("email"),
                           res.getString("phoneNumber"), res.getString("libraryCardId")
                          );
@@ -43,7 +43,7 @@ public class Patron extends LibraryUser {
                 System.out.println("Wrong attribute");
                 return null;
             }
-        try {
+      
            final String selectQuery = "SELECT * FROM Patron WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            dbEntryQuery.setString(1, "%" + value + "%");
@@ -52,15 +52,11 @@ public class Patron extends LibraryUser {
            while (patronEntries.next()) {
                 patrons.add(formPatronObject(patronEntries));
            }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        
         return patrons;
     }
 
-    public static Patron findOne(String attribute, String value) {
+   public static Patron findOne(String attribute, String value)  {
         //get connectoin
         List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "libraryCardId");
         if(!acceptedAttributes.contains(attribute))
@@ -68,27 +64,21 @@ public class Patron extends LibraryUser {
                 System.out.println("Wrong attribute");
                 return null;
             }
-        try {
+        
            final String selectQuery = "SELECT * FROM Patron WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            dbEntryQuery.setString(1, value);
            ResultSet patronEntries = dbEntryQuery.executeQuery();
            //check if there are rows
-           if (patronEntries.next()) {
+           if (patronEntries.next()) 
                 return formPatronObject(patronEntries);
-           }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+          
         return null;
     }
-
+ 
 
     @Override
-    public boolean saveToDatabase() {
-        try {
+    public boolean saveToDatabase()  {
             // Check if the Patron already exists
             boolean patronExists = this.checkIfUserExist();
             PreparedStatement stmt = null;
@@ -115,14 +105,8 @@ public class Patron extends LibraryUser {
                 stmt.setString(6, this.libraryCardId);
             }
             // Execute the statement
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
-        }catch(SQLException err) {
-            err.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+            stmt.executeUpdate();
+            return true;
     }
 
 

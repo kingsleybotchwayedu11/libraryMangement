@@ -1,5 +1,7 @@
 package library.views.registerPatron;
 
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -69,7 +71,7 @@ public class RegisterPatronController  {
     }
 
     @FXML
-    private void saveUser() {
+    private void saveUser() throws SQLException {
         if(validate()){
             StatusReport dbReport = UserController.registerPatron(name.getText(), address.getText(), email.getText(), telephone.getText());
             String message;

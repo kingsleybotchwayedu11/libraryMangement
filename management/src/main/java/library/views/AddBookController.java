@@ -1,5 +1,7 @@
 package library.views;
 
+import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -58,7 +60,7 @@ public class AddBookController {
     }
 
     @FXML
-    void addBook() {
+    void addBook() throws SQLException{
         if(validate()) {
             
             StatusReport bookReport = BooksController.uploadBook(title.getText(),locationBook.getText(), toalCop, author.getText(), genre.getSelectionModel().getSelectedItem());

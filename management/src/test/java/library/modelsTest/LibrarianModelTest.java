@@ -41,6 +41,11 @@ class LibrarianModleTest {
         //delete all test entries
         testLibrarian.deleteFromDatabase();
     }
+    @Test
+    void testGetters() {
+        assertNotNull(testLibrarian.getPassword());
+        assertNotNull(testLibrarian.getUserName());
+    }
 
     @Test
     void testInsertIntoDatabase() throws SQLException {
@@ -88,5 +93,21 @@ class LibrarianModleTest {
         testLibrarian.saveToDatabase();
         Librarian librarian = Librarian.findOne("id",testLibrarian.getId());
         assertEquals(librarian.getId(), testLibrarian.getId());
+    }
+
+    @Test
+    void findOneWrongColumn() throws SQLException {
+        Librarian librarian = Librarian.findOne("wrong column", "name");
+        assertNull(librarian);
+    }
+    @Test
+    void doesNotExist() throws SQLException {
+        Librarian librarian = Librarian.findOne("name", "name");
+        assertNull(librarian);
+    }
+    @Test 
+    void finOneWrongColumn() throws SQLException {
+        assertNotNull(testLibrarian.getUserName());
+        assertNotNull(testLibrarian.getPassword());
     }
 }

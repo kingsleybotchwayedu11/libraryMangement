@@ -76,21 +76,33 @@ class CheckInTransactionTest {
 
     @Test
     void testInsertIntoDatabase() throws SQLException {
-        // Test to ensure the book is saved in the database
+        //Test to ensure the book is saved in the database
         boolean checinTransactionSavedSuccessfully = checkst.saveToDatabase();
-        assertTrue(checinTransactionSavedSuccessfully, "Should insert the Transaction Model into the database");
+       assertTrue(checinTransactionSavedSuccessfully, "Should insert the Transaction Model into the database");
         //fetch the information from the datatabase
         String query = "SELECT * FROM CheckInTransaction where id = ?";
         PreparedStatement st = databaseConnection.prepareStatement(query);
         st.setString(1, checkst.getId());
         ResultSet dataFeedback = st.executeQuery();
         assertTrue(dataFeedback.next());
-        assertEquals(dataFeedback.getString("id"), checkst.getId());
+        assertEquals(dataFeedback.getString("id"), checkst.getId()); 
+    } 
+    @Test
+    void checkUpdate() throws SQLException {
+        // Test to ensure the book is saved in the database
+        boolean checinTransactionSavedSuccessfully = checkst.saveToDatabase();
+        assertTrue(checinTransactionSavedSuccessfully, "Should insert the Transaction Model into the database");
+        checkst.setAcceptedBy("strong id");
+        checkst.saveToDatabase();
+        assertEquals(checkst.getAcceptedBy(), "strong id");
     }
 
 
-    
-    } 
+    @Test
+    void checkType () {
+        assertEquals(checkst.getType(), "CheckInTransaction");
+    }
+} 
 
     
 

@@ -5,9 +5,14 @@ import java.sql.*;
 
 public interface DatabaseOperationInterface {
 
-     public default  Connection getConnection() {
+     public default  Connection getConnection()  {
         //returns database connection
-        return DatabaseConnection.getConnection();
+        try {
+         return DatabaseConnection.getConnection();
+        } catch(Exception ex) {
+         return null;
+        }
+        
      }
 
 
@@ -15,6 +20,6 @@ public interface DatabaseOperationInterface {
      public boolean saveToDatabase();
 
      //update entry from the database;
-     public boolean deleteFromDatabase();
+     public boolean deleteFromDatabase() ;
     
 }

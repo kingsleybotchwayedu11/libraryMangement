@@ -17,22 +17,14 @@ public class DatabaseConnection {
 
     // Method to establish and return a database connection
     public static  Connection getConnection() {
-      
-
-        try {
-            // Step 1: Load and register JDBC driver
-           // Class.forName("com.mysql.cj.jdbc.Driver");  // For MySQL JDBC driver
+            try {
+                connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                connection = null;
+            }
             
-            // Step 2: Establish the connection
-            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
 
-        } catch (SQLException e) {
-            // Step 3: Handle SQL exceptions (e.g., wrong credentials, database not available)
-           System.err.println();
-        } catch (Exception e) {
-            // Step 5: Handle any other unexpected exceptions
-            System.out.println(e);
-        }
         return connection;
     }
 

@@ -1,5 +1,6 @@
 package library.views;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javafx.beans.property.SimpleBooleanProperty;
@@ -101,7 +102,7 @@ public class HomeController {
     }
 
     @FXML //search the query
-    private void searchBook(){
+    private void searchBook() throws SQLException{
         if(query.getText().isEmpty()) {
             error.setText("Value must be provided");
             error.setVisible(true);

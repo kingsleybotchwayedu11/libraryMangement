@@ -20,6 +20,7 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
         this.id = id;
         
     }
+    LibraryResource() {}
     // Getter and Setter for title
     public boolean isAvailable() {
         return this.totalBorrowed < this.totalCopies;
@@ -47,17 +48,10 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
+  
     // Getter and Setter for totalCopies
     public int getTotalCopies() {
         return totalCopies;
-    }
-
-    public void setTotalCopies(int totalCopies) {
-        this.totalCopies = totalCopies;
     }
 
     // Getter and Setter for totalBorrowed
@@ -74,25 +68,8 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
         return resourceType;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
-    }
-
     // Additional method to calculate remaining copies (optional)
     public int getRemainingCopies() {
         return totalCopies - totalBorrowed;
-    }
-
-
-    // toString method for easier logging/representation (optional)
-    @Override
-    public String toString() {
-        return "LibraryResource{" +
-                "title='" + title + '\'' +
-                ", location='" + location + '\'' +
-                ", totalCopies=" + totalCopies +
-                ", totalBorrowed=" + totalBorrowed +
-                ", resourceType='" + resourceType + '\'' +
-                '}';
     }
 }

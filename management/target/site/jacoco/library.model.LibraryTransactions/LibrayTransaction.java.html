@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LibrayTransaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.model.LibraryTransactions</a> &gt; <span class="el_source">LibrayTransaction.java</span></div><h1>LibrayTransaction.java</h1><pre class="source lang-java linenums">/**
+ * Abstract class template to handle library transactions
+ */
+
+ package library.model.LibraryTransactions;
+
+import library.utils.databaseOperations.DatabaseOperationInterface;
+import java.sql.*;
+
+abstract class LibraryTransaction implements DatabaseOperationInterface {
+ protected String id; // the id that uniquly identify transactions
+ protected String type; //the type of transaction, weather borrowed or checkin
+
+<span class="fc" id="L14"> LibraryTransaction(String id, String type){</span>
+<span class="fc" id="L15">    this.id = id; // id of the transaction</span>
+<span class="fc" id="L16">    this.type = type; // type of the transaction</span>
+<span class="fc" id="L17"> }</span>
+ // Getters and Setters for id
+public String getId() {
+<span class="fc" id="L20">    return id;</span>
+}
+
+public String getType() {
+<span class="fc" id="L24">    return type;</span>
+}
+
+protected boolean checkIfTransactionExists() throws SQLException {
+<span class="fc" id="L28">    String selectQuery =&quot;SELECT 1 FROM &quot; + this.type + &quot; WHERE id = ?&quot;;</span>
+<span class="fc" id="L29">    PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);</span>
+<span class="fc" id="L30">    checkIfExistQuery.setString(1, this.id); // Use the transactionId field of this instance</span>
+<span class="fc" id="L31">    ResultSet resultSet = checkIfExistQuery.executeQuery();</span>
+<span class="fc" id="L32">    return resultSet.next(); // Returns true if a result is found, false otherwise</span>
+ }
+
+
+@Override 
+public boolean deleteFromDatabase() throws SQLException {
+
+<span class="fc" id="L39">        String sql = &quot;DELETE FROM &quot; + this.type + &quot; WHERE id = ?&quot;;</span>
+<span class="fc" id="L40">        PreparedStatement stmt = this.getConnection().prepareStatement(sql);</span>
+<span class="fc" id="L41">        stmt.setString(1, this.id);</span>
+<span class="fc" id="L42">        stmt.executeUpdate();</span>
+<span class="fc" id="L43">        return  true;</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

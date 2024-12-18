@@ -22,6 +22,8 @@ public class Librarian extends LibraryUser {
         this.userName = userName; // Initialize the specific Librarian field
         this.password = password; // Initialize the specific Librarian field
     }
+
+    public Librarian() {}
     // Getter and Setter for userName
     public String getUserName() {
         return userName;
@@ -31,12 +33,9 @@ public class Librarian extends LibraryUser {
         return this.password;
     }
     
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public boolean saveToDatabase() {
-        try {
+    
             // Check if the librarian already exists
             boolean librarianExists = this.checkIfUserExist();
             PreparedStatement stmt = null;
@@ -68,18 +67,15 @@ public class Librarian extends LibraryUser {
     
             // Execute the statement
             int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-        return false;
+            return true;
+        
     }
     static Librarian formLibrarianObject(ResultSet res)  throws SQLException{
         return new Librarian(res.getString("id"), res.getString("name"), res.getString("address"), res.getString("email"), 
         res.getString("phoneNumber"),res.getString("userName"), res.getString("password") );
     }
     
-    public static Librarian findOne(String attribute, String value) {
+    public static Librarian findOne(String attribute, String value)  throws SQLException {
         //get connectoin
         List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "userName");
         if(!acceptedAttributes.contains(attribute))
@@ -87,22 +83,17 @@ public class Librarian extends LibraryUser {
                 System.out.println("Wrong attribute");
                 return null;
             }
-        try {
+       
            final String selectQuery = "SELECT * FROM Librarian WHERE " + attribute + " LIKE ?";
            PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);
            dbEntryQuery.setString(1, value);
            ResultSet libarianEntry = dbEntryQuery.executeQuery();
            //check if there are rows
-           if (libarianEntry.next()) {
+           if (libarianEntry.next()) 
                 return formLibrarianObject(libarianEntry);
-           }
-        } catch(SQLException ex) {
-        ex.printStackTrace();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+           return null;
+    
+}
 
 
 }

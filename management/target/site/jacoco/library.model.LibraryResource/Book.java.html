@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Book.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">management</a> &gt; <a href="index.source.html" class="el_package">library.model.LibraryResource</a> &gt; <span class="el_source">Book.java</span></div><h1>Book.java</h1><pre class="source lang-java linenums">/**
+ * template for book resource
+ */
+package library.model.LibraryResource;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+import java.util.UUID;
+
+
+import library.utils.databaseOperations.DatabaseConnection;
+
+public class Book  extends LibraryResource{
+    private String genre;
+    private String author;
+    
+    public Book(String id, String title, String location, int totalCopies, int totalBorrowed, String author,  String genre) {
+<span class="fc" id="L22">        super(id, title, location, totalCopies, totalBorrowed);</span>
+<span class="fc" id="L23">        this.author = author;</span>
+<span class="fc" id="L24">        this.genre = genre;</span>
+<span class="fc" id="L25">        this.resourceType = &quot;book&quot;;  // Default value for resource type</span>
+<span class="fc" id="L26">    }</span>
+<span class="nc" id="L27">    public Book() {};</span>
+
+    private boolean checkIfBookExist() throws SQLException {
+<span class="fc" id="L30">        final String selectQuery = &quot;SELECT 1 from Book where id = ?&quot;;</span>
+<span class="fc" id="L31">        PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);</span>
+<span class="fc" id="L32">        checkIfExistQuery.setString(1, this.id);</span>
+<span class="fc" id="L33">        ResultSet resultSet = checkIfExistQuery.executeQuery();</span>
+<span class="fc" id="L34">        return resultSet.next();</span>
+
+    }
+    public String getAuthor() {
+<span class="fc" id="L38">        return author;</span>
+    }
+    public String getGenre() {
+<span class="fc" id="L41">        return genre;</span>
+    }
+    @Override
+    public boolean saveToDatabase() throws SQLException{
+        
+            PreparedStatement stmt;
+            //check if book is already saved
+<span class="fc" id="L48">            boolean bookIsAlreadySaved = checkIfBookExist();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            if(bookIsAlreadySaved) {</span>
+                //execute update query
+<span class="fc" id="L51">                String updateSQL = &quot;UPDATE Book &quot; +</span>
+                               &quot;SET title = ?, location = ?, totalCopies = ?, totalBorrowed = ?, author = ?,  genre = ? &quot; +
+                                &quot;WHERE id = ?&quot;;
+<span class="fc" id="L54">                stmt = this.getConnection().prepareStatement(updateSQL);</span>
+                    // bookId
+<span class="fc" id="L56">                stmt.setString(1, this.title);      // title</span>
+<span class="fc" id="L57">                stmt.setString(2, this.location);   // location</span>
+<span class="fc" id="L58">                stmt.setInt(3,    this.totalCopies);   // totalCopies</span>
+<span class="fc" id="L59">                stmt.setInt(4,    this.totalBorrowed); // totalBorrowed</span>
+<span class="fc" id="L60">                stmt.setString(5, this.author);     // author</span>
+<span class="fc" id="L61">                stmt.setString(6, this.genre);</span>
+<span class="fc" id="L62">                stmt.setString(7, this.id); </span>
+<span class="fc" id="L63">            } else {</span>
+                //insert book
+<span class="fc" id="L65">                String insertSQL = &quot;INSERT INTO Book (id, title, location, totalCopies, totalBorrowed, author,  genre) &quot; +</span>
+                &quot;VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;
+<span class="fc" id="L67">                stmt = this.getConnection().prepareStatement(insertSQL);</span>
+<span class="fc" id="L68">                stmt.setString(1, this.id);     // bookId</span>
+<span class="fc" id="L69">                stmt.setString(2, this.title);      // title</span>
+<span class="fc" id="L70">                stmt.setString(3, this.location);   // location</span>
+<span class="fc" id="L71">                stmt.setInt(4,    this.totalCopies);   // totalCopies</span>
+<span class="fc" id="L72">                stmt.setInt(5,    this.totalBorrowed); // totalBorrowed</span>
+<span class="fc" id="L73">                stmt.setString(6, this.author);     // author</span>
+<span class="fc" id="L74">                stmt.setString(7, this.genre);</span>
+            }
+           //execute statement
+<span class="fc" id="L77">           stmt.executeUpdate();</span>
+<span class="fc" id="L78">           return true;</span>
+        
+    
+        }
+    
+    @Override
+    public boolean deleteFromDatabase() throws SQLException{
+<span class="fc" id="L85">        String sql = &quot;DELETE FROM BOOK WHERE id = ?&quot;;</span>
+<span class="fc" id="L86">        PreparedStatement stmt = this.getConnection().prepareStatement(sql);</span>
+<span class="fc" id="L87">        stmt.setString(1, this.id);</span>
+<span class="fc" id="L88">        stmt.executeUpdate();</span>
+<span class="fc" id="L89">        return true;</span>
+        
+    }
+
+
+    private static Book formBookObjec(ResultSet rst) throws SQLException {
+<span class="fc" id="L95">        return new Book(</span>
+<span class="fc" id="L96">                        rst.getString(&quot;id&quot;),</span>
+<span class="fc" id="L97">                        rst.getString(&quot;title&quot;),</span>
+<span class="fc" id="L98">                        rst.getString(&quot;location&quot;),</span>
+<span class="fc" id="L99">                        rst.getInt(&quot;totalCopies&quot;),</span>
+<span class="fc" id="L100">                        rst.getInt(&quot;totalBorrowed&quot;),</span>
+<span class="fc" id="L101">                        rst.getString(&quot;author&quot;),</span>
+<span class="fc" id="L102">                        rst.getString(&quot;genre&quot;));</span>
+    }
+    public static Book getById(String id) throws SQLException {
+        //get connectoin
+<span class="fc" id="L106">           final String selectQuery = &quot;SELECT * from Book where id = ?&quot;;</span>
+<span class="fc" id="L107">           PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);</span>
+<span class="fc" id="L108">           dbEntryQuery.setString(1, id);</span>
+<span class="fc" id="L109">           ResultSet bookEntry = dbEntryQuery.executeQuery();</span>
+           //check if there are rows
+<span class="fc bfc" id="L111" title="All 2 branches covered.">           if(bookEntry.next()) </span>
+<span class="fc" id="L112">            return formBookObjec(bookEntry);</span>
+<span class="fc" id="L113">           return null; </span>
+    }
+
+    public static List&lt;Book&gt; findByAttribute(String attribute, String value) throws SQLException{
+        //get connectoin
+<span class="fc" id="L118">        ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L119">        List&lt;String&gt; acceptedAttributes = Arrays.asList(&quot;id&quot;, &quot;title&quot;, &quot;location&quot;, &quot;genre&quot;);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if(!acceptedAttributes.contains(attribute))</span>
+            {
+<span class="fc" id="L122">                System.out.println(&quot;Wrong attribute&quot;);</span>
+<span class="fc" id="L123">                return null;</span>
+            }
+      
+<span class="fc" id="L126">           final String selectQuery = &quot;SELECT * FROM Book WHERE &quot; + attribute + &quot; LIKE ?&quot;;</span>
+<span class="fc" id="L127">           PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);</span>
+<span class="fc" id="L128">           dbEntryQuery.setString(1, &quot;%&quot; + value + &quot;%&quot;);</span>
+<span class="fc" id="L129">           ResultSet bookEntry = dbEntryQuery.executeQuery();</span>
+           //check if there are rows
+<span class="fc bfc" id="L131" title="All 2 branches covered.">           while (bookEntry.next()) {</span>
+<span class="fc" id="L132">                books.add(formBookObjec(bookEntry));</span>
+           }
+        
+<span class="fc" id="L135">        return books;</span>
+    }
+   
+    public static List&lt;Book&gt; getAllBooks() throws SQLException{
+<span class="fc" id="L139">        ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();        </span>
+     
+<span class="fc" id="L141">           final String selectQuery = &quot;SELECT * FROM Book&quot;;</span>
+<span class="fc" id="L142">           PreparedStatement dbEntryQuery = DatabaseConnection.getConnection().prepareStatement(selectQuery);</span>
+<span class="fc" id="L143">           ResultSet bookEntry = dbEntryQuery.executeQuery();</span>
+           //check if there are rows
+<span class="fc bfc" id="L145" title="All 2 branches covered.">           while (bookEntry.next()) {</span>
+<span class="fc" id="L146">                books.add(formBookObjec(bookEntry));</span>
+           }
+        
+<span class="fc" id="L149">        return books;</span>
+    }
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

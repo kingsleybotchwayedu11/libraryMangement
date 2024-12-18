@@ -1,10 +1,12 @@
 package library.controllers;
 import library.model.Users.*;
+
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class UserController {
      //access route for only admin use cases
-     static StatusReport registerLibarian(String name, String address, String email, String phoneNumber, String userName, String password ) {
+     static StatusReport registerLibarian(String name, String address, String email, String phoneNumber, String userName, String password )  throws SQLException{
           //check if username exist
           Librarian checiIfSaved  = Librarian.findOne("email", "email");
           if(checiIfSaved != null)
@@ -17,7 +19,7 @@ public class UserController {
      }
 
 
-     static public StatusReport registerPatron( String name,  String address, String email, String phoneNumber ) {
+     static public StatusReport registerPatron( String name,  String address, String email, String phoneNumber )  throws SQLException{
           //check if patron with the same email exist
           Patron patronSaved = Patron.findOne("email", email);
           //Get library member id
@@ -32,7 +34,7 @@ public class UserController {
      }
 
      //login libarian
-     static public StatusReport  loginLibarian(String userName, String password) {
+     static public StatusReport  loginLibarian(String userName, String password) throws SQLException {
           //fetch the libarian from the user database
           Librarian libarian = Librarian.findOne("userName", userName);
           if(libarian == null)
