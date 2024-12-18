@@ -25,7 +25,7 @@ public class Patron extends LibraryUser {
     }
 
     //Book
-    private static Patron formPatronObject(ResultSet res){
+    private static Patron formPatronObject(ResultSet res) throws SQLException {
         return new Patron(res.getString("id"), res.getString("name"), res.getString("address"), res.getString("email"),
                           res.getString("phoneNumber"), res.getString("libraryCardId")
                          );
@@ -34,7 +34,7 @@ public class Patron extends LibraryUser {
         this.libraryCardId = libraryCardId;
     }
 
-    public static List<Patron> findByAttribute(String attribute, String value) {
+    public static List<Patron> findByAttribute(String attribute, String value) throws SQLException{
         //get connectoin
         List<Patron> patrons = new ArrayList<>();
         List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "address", "libraryCardId", "phoneNumber");
@@ -56,7 +56,7 @@ public class Patron extends LibraryUser {
         return patrons;
     }
 
-   public static Patron findOne(String attribute, String value)  {
+   public static Patron findOne(String attribute, String value) throws SQLException {
         //get connectoin
         List<String> acceptedAttributes = Arrays.asList("id", "name", "email", "libraryCardId");
         if(!acceptedAttributes.contains(attribute))
@@ -78,7 +78,7 @@ public class Patron extends LibraryUser {
  
 
     @Override
-    public boolean saveToDatabase()  {
+    public boolean saveToDatabase() throws SQLException {
             // Check if the Patron already exists
             boolean patronExists = this.checkIfUserExist();
             PreparedStatement stmt = null;

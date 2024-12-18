@@ -34,7 +34,7 @@ public class Librarian extends LibraryUser {
     }
     
 
-    public boolean saveToDatabase() {
+    public boolean saveToDatabase() throws SQLException{
     
             // Check if the librarian already exists
             boolean librarianExists = this.checkIfUserExist();

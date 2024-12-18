@@ -81,7 +81,7 @@ abstract class LibraryUser implements DatabaseOperationInterface {
     }
 
     // Method to check if user exists in the database
-    protected boolean checkIfUserExist()  {
+    protected boolean checkIfUserExist() throws SQLException {
         String selectQuery = "SELECT 1 FROM " + this.role + " WHERE id = ?";
         PreparedStatement checkIfExistQuery = this.getConnection().prepareStatement(selectQuery);
         checkIfExistQuery.setString(1, this.id); // Use the transactionId field of this instance
