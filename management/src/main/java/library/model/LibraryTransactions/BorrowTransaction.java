@@ -115,7 +115,8 @@ public class BorrowTransaction extends LibraryTransaction {
         PreparedStatement stmt;
         // Check if the transaction is already saved in the database
         boolean transactionExists = this.checkIfTransactionExists(); 
-        
+        System.out.println( "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        System.out.println(transactionExists);
         if (transactionExists) {
             // Update existing transaction
             String updateSQL = "UPDATE BorrowingTransaction " +
@@ -146,6 +147,7 @@ public class BorrowTransaction extends LibraryTransaction {
         }
 
         // Execute the prepared statement
+        stmt.executeUpdate();
         return true;
     }
 

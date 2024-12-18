@@ -82,7 +82,7 @@ class BorrowingTransactionTest {
         assertEquals(dataFeedback.getString("id"), testBorrowTransaction.getId());
     }
 
-   @Test
+  @Test
     void checkUpdate() throws SQLException {
         // Test to ensure the book is saved in the database
         String updatedStatus = "closed";
@@ -96,7 +96,7 @@ class BorrowingTransactionTest {
         st.next();
         assertEquals(updatedStatus, st.getString("status"));
         assertTrue(isUPdated); //information must exist
-    }
+    } 
 
     @Test
     void checkAllOverdue() throws SQLException {
