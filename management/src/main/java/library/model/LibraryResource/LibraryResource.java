@@ -28,12 +28,14 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
     public String getTitle() {
         return title;
     }
-    public void incrementTotalBorrowed(){
+    public boolean incrementTotalBorrowed(){
         totalBorrowed += 1;
+        return true;
     }
 
-    public void decrementTotalBorrowed(){
+    public boolean decrementTotalBorrowed(){
         totalBorrowed -= 1;
+        return true;
     }
 
     public void setTitle(String title) {

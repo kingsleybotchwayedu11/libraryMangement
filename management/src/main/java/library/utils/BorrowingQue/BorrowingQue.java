@@ -10,7 +10,7 @@ public class BorrowingQue {
     public static HashMap<String, Queue<String>> borrowQue = new HashMap<>();
 
    
-    public static void addToQue(String resourceId, String reservationId) {
+    public static boolean addToQue(String resourceId, String reservationId) {
         // Check if the resource already has a queue.
         if (borrowQue.containsKey(resourceId)) {
             // If a queue exists, add the reservation ID to it.
@@ -21,6 +21,7 @@ public class BorrowingQue {
             resourceQue.add(reservationId);
             borrowQue.put(resourceId, resourceQue);
         }
+        return true;
     }
 
    

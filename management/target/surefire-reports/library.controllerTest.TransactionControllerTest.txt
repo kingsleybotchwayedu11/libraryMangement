@@ -1,0 +1,128 @@
+-------------------------------------------------------------------------------
+Test set: library.controllerTest.TransactionControllerTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 9, Skipped: 0, Time elapsed: 1.692 s <<< FAILURE! - in library.controllerTest.TransactionControllerTest
+library.controllerTest.TransactionControllerTest.testAddReservation_bookNotFound  Time elapsed: 1.368 s  <<< ERROR!
+org.mockito.exceptions.misusing.NotAMockException: Argument should be a mock, but is: class java.lang.Class
+	at library.controllerTest.TransactionControllerTest.testAddReservation_bookNotFound(TransactionControllerTest.java:159)
+
+library.controllerTest.TransactionControllerTest.testReturnResource_successful  Time elapsed: 0.073 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testReturnResource_successful(TransactionControllerTest.java:137)
+
+library.controllerTest.TransactionControllerTest.testAddReservation_successful  Time elapsed: 0.084 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testAddReservation_successful(TransactionControllerTest.java:194)
+
+library.controllerTest.TransactionControllerTest.testAddReservation_patronNotFound  Time elapsed: 0.033 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testAddReservation_patronNotFound(TransactionControllerTest.java:176)
+
+library.controllerTest.TransactionControllerTest.testBorrowResource_bookUnavailable  Time elapsed: 0.019 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testBorrowResource_bookUnavailable(TransactionControllerTest.java:81)
+
+library.controllerTest.TransactionControllerTest.testBorrowResource_successful  Time elapsed: 0.02 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testBorrowResource_successful(TransactionControllerTest.java:100)
+
+library.controllerTest.TransactionControllerTest.testReturnResource_transactionNotFound  Time elapsed: 0.021 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testReturnResource_transactionNotFound(TransactionControllerTest.java:119)
+
+library.controllerTest.TransactionControllerTest.testBorrowResource_bookNotFound  Time elapsed: 0.017 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testBorrowResource_bookNotFound(TransactionControllerTest.java:46)
+
+library.controllerTest.TransactionControllerTest.testBorrowResource_patronNotFound  Time elapsed: 0.018 s  <<< ERROR!
+org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at library.controllerTest.TransactionControllerTest.testBorrowResource_patronNotFound(TransactionControllerTest.java:63)
+
