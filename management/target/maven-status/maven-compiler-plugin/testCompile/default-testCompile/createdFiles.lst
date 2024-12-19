@@ -1,8 +1,0 @@
-library\modelsTest\GenreTest.class
-library\modelsTest\CheckInTransactionTest.class
-library\modelsTest\PatronModelTest.class
-library\modelsTest\DatabaseConnectionTest.class
-library\modelsTest\BorrowingTransactionTest.class
-library\modelsTest\BookModelTest.class
-library\modelsTest\ReservationModelTest.class
-library\modelsTest\LibrarianModleTest.class

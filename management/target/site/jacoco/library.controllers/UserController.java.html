@@ -6,43 +6,30 @@ import java.util.UUID;
 
 <span class="nc" id="L7">public class UserController {</span>
      //access route for only admin use cases
-     static StatusReport registerLibarian(String name, String address, String email, String phoneNumber, String userName, String password )  throws SQLException{
-          //check if username exist
-<span class="nc" id="L11">          Librarian checiIfSaved  = Librarian.findOne(&quot;email&quot;, &quot;email&quot;);</span>
-<span class="nc bnc" id="L12" title="All 2 branches missed.">          if(checiIfSaved != null)</span>
-<span class="nc" id="L13">               return new StatusReport(false, &quot;user with the same email saved&quot;);</span>
-          //Get form pathron object
-<span class="nc" id="L15">          Librarian newLibrarian = new Librarian(UUID.randomUUID().toString(),name, address, email, phoneNumber, userName, password);</span>
-          //Save patron information to database
-<span class="nc" id="L17">          newLibrarian.saveToDatabase();</span>
-<span class="nc" id="L18">          return new StatusReport(true, &quot;successfully saved&quot;, newLibrarian);</span>
-     }
 
 
-     static public StatusReport registerPatron( String name,  String address, String email, String phoneNumber )  throws SQLException{
+     static public StatusReport registerPatron( Patron patron )  throws SQLException{
           //check if patron with the same email exist
-<span class="nc" id="L24">          Patron patronSaved = Patron.findOne(&quot;email&quot;, email);</span>
+<span class="fc" id="L13">          Patron patronSaved = Patron.findOne(&quot;email&quot;, patron.getEmail());</span>
           //Get library member id
-<span class="nc bnc" id="L26" title="All 2 branches missed.">          if(patronSaved != null)</span>
-<span class="nc" id="L27">               return new StatusReport(false, &quot;User already saved&quot;);</span>
-<span class="nc" id="L28">          String libraryCardId = UUID.randomUUID().toString().replace(&quot;_&quot;, &quot;&quot;).substring(0,10); </span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">          if(patronSaved != null)</span>
+<span class="fc" id="L16">               return new StatusReport(false, &quot;User already saved&quot;);</span>
           //Get form pathron object
-<span class="nc" id="L30">          Patron patron = new Patron(UUID.randomUUID().toString(),name, address, email, phoneNumber,libraryCardId);</span>
           //Save patron information to database
-<span class="nc" id="L32">          boolean isSaved = patron.saveToDatabase();</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">          return isSaved ? new StatusReport(true, &quot;patron saved&quot;, patron) : new StatusReport(false, &quot;couldn't save user&quot;); </span>
+<span class="fc" id="L19">          boolean isSaved = patron.saveToDatabase();</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">          return isSaved ? new StatusReport(true, &quot;patron saved&quot;, patron) : new StatusReport(false, &quot;couldn't save user&quot;); </span>
      }
 
      //login libarian
      static public StatusReport  loginLibarian(String userName, String password) throws SQLException {
           //fetch the libarian from the user database
-<span class="nc" id="L39">          Librarian libarian = Librarian.findOne(&quot;userName&quot;, userName);</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">          if(libarian == null)</span>
-<span class="nc" id="L41">               return new StatusReport(false, &quot;libarian not registered&quot;);</span>
+<span class="fc" id="L26">          Librarian libarian = Librarian.findOne(&quot;userName&quot;, userName);</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">          if(libarian == null)</span>
+<span class="fc" id="L28">               return new StatusReport(false, &quot;libarian not registered&quot;);</span>
           //check if passwords math
-<span class="nc bnc" id="L43" title="All 2 branches missed.">          if(!libarian.getPassword().equals(password)) </span>
-<span class="nc" id="L44">               return new StatusReport(false, &quot;passwords dont match&quot;);</span>
-<span class="nc" id="L45">          return new StatusReport(true, &quot;successfully login&quot;, libarian);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">          if(!libarian.getPassword().equals(password)) </span>
+<span class="nc" id="L31">               return new StatusReport(false, &quot;passwords dont match&quot;);</span>
+<span class="fc" id="L32">          return new StatusReport(true, &quot;successfully login&quot;, libarian);</span>
 
      }
 

@@ -17,14 +17,13 @@ public class BooksController {
      * 
      * @param title       The title of the book.
      * @param location    The physical location of the book in the library.
-     * @param totalCopies The total number of copies of the book available.
+     * @param totalCopies The total number of copies of the book available.y
      * @param author      The author of the book.
      * @param genre       The genre of the book.
      * @return A StatusReport indicating success or failure of the book upload operation.
      */
-    public static StatusReport uploadBook(String title, String location, int totalCopies, String author, String genre)  throws SQLException{
+    public static StatusReport uploadBook(Book newBook)  throws SQLException{
         // Create a new Book object with a unique ID.
-        Book newBook = new Book(UUID.randomUUID().toString(), title, location, totalCopies, 0, author, genre.toLowerCase());
 
         // Save the new book to the database and return a StatusReport.
         return newBook.saveToDatabase() ? 

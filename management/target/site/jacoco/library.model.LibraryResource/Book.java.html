@@ -24,7 +24,7 @@ public class Book  extends LibraryResource{
 <span class="fc" id="L24">        this.genre = genre;</span>
 <span class="fc" id="L25">        this.resourceType = &quot;book&quot;;  // Default value for resource type</span>
 <span class="fc" id="L26">    }</span>
-<span class="nc" id="L27">    public Book() {};</span>
+<span class="fc" id="L27">    public Book() {};</span>
 
     private boolean checkIfBookExist() throws SQLException {
 <span class="fc" id="L30">        final String selectQuery = &quot;SELECT 1 from Book where id = ?&quot;;</span>

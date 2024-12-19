@@ -1,6 +1,7 @@
 package library.views.registerPatron;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -73,7 +74,8 @@ public class RegisterPatronController  {
     @FXML
     private void saveUser() throws SQLException {
         if(validate()){
-            StatusReport dbReport = UserController.registerPatron(name.getText(), address.getText(), email.getText(), telephone.getText());
+            Patron pat = new Patron(UUID.randomUUID().toString(), name.getText(), address.getText(), email.getText(), telephone.getText() , UUID.randomUUID().toString().replace("_", "").substring(0,10));
+            StatusReport dbReport = UserController.registerPatron(pat);
             String message;
             if(dbReport.getOperationStatus()) {
                 Patron patron = (Patron) dbReport.getOperationEntity();

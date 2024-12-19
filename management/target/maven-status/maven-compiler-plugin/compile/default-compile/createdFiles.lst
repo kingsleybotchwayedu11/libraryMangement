@@ -11,6 +11,7 @@ library\model\Users\LibraryUser.class
 library\controllers\BooksController.class
 library\model\LibraryTransactions\CheckInTransaction.class
 library\utils\sessions\LibrarianSession.class
+library\views\BorrowTransactionView.class
 library\views\UserDetailsController.class
 library\model\LibraryResource\Book.class
 library\model\Users\Librarian.class

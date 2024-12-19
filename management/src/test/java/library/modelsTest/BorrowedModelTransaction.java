@@ -2,8 +2,7 @@ package library.modelsTest;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-
+import org.mockito.MockedStatic;
 import org.junit.jupiter.api.AfterAll;
 import library.model.LibraryResource.*;
 import library.model.LibraryTransactions.BorrowTransaction;
@@ -11,6 +10,7 @@ import library.model.Users.Librarian;
 import library.model.Users.Patron;
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +22,10 @@ import java.util.UUID;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 class BorrowingTransactionTest {
     private static BorrowTransaction testBorrowTransaction;
     private static Patron bowrower;
@@ -108,18 +112,91 @@ class BorrowingTransactionTest {
         assertEquals(1, overDue.size());
         }
 
-       /*  @Test
-        void getUserBorrowBook() throws SQLException {
-            testBorrowTransaction.setExpectedReturnDate(LocalDateTime.now().minusDays(5)); //update return date
-            testBorrowTransaction.setStatus("active");
-            boolean updated = testBorrowTransaction.saveToDatabase(); //save changes
-            List<BorrowTransaction> overDue = BorrowTransaction.get(testBook.getId(), bowrower.getLibraryCardId());
-            assertTrue(updated);
-            assertEquals(1, overDue.size());
-            }
-     */
-    
+    @Test
+    void getUserBorrowBook() throws SQLException {
+        testBorrowTransaction.setExpectedReturnDate(LocalDateTime.now().minusDays(5)); //update return date
+        testBorrowTransaction.setStatus("active");
+        assertEquals("active", testBorrowTransaction.getStatus());
+        boolean updated = testBorrowTransaction.saveToDatabase(); //save changes
+        List<BorrowTransaction> overDue = BorrowTransaction.getAllOverdue();
+        assertTrue(updated);
+        assertEquals(1, overDue.size());
+        }
+
+    @Test
+    void gettersSetters() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        assertEquals("active", testBorrowTransaction.getStatus());
+        assertNotNull(testBorrowTransaction.getExpectedReturnDate());
+        assertNotNull(testBorrowTransaction.getBorrowedDate());
+        assertNotNull(testBorrowTransaction.checkIfOverdue());
+        assertNotNull(testBorrowTransaction.getBorrower());
+        assertNotNull(testBorrowTransaction.getIssuedLibrarian());
+        assertNotNull(testBorrowTransaction.getBorrowedItem());
     } 
+    
+    @Test
+    void getAllTransactions() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transactions = BorrowTransaction.getAll();
+        assertEquals(1, transactions.size(), "expect empty transactions");
+    }
+
+    @Test
+    void getUserTransactions() throws SQLException {
+        var transaction = BorrowTransaction.getUser("wrong user");
+        assertEquals(0, transaction.size());
+    }
+
+    @Test
+    void getUserExist() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transaction = BorrowTransaction.getUser(bowrower.getLibraryCardId());
+        assertEquals(1, transaction.size());
+    }
+
+    @Test
+    void getResourceEmpty() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transaction = BorrowTransaction.getResource("wrong id");
+        assertEquals(0, transaction.size());
+    }
+
+    @Test
+    void getResource() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transaction = BorrowTransaction.getResource(testBook.getId());
+        assertEquals(1, transaction.size());
+    }
+
+    @Test
+    void getIdEmpty() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transaction = BorrowTransaction.getById("wrong id");
+        assertNull(transaction);
+    }
+
+    @Test
+    void getIdExist() throws SQLException {
+        testBorrowTransaction.saveToDatabase();
+        var transaction = BorrowTransaction.getById(testBorrowTransaction.getId());
+        assertNotNull(transaction);
+    }
+
+    @Test
+    void mockException() throws SQLException{
+        Connection mockConnection = mock(Connection.class);
+        PreparedStatement mockStatement = mock(PreparedStatement.class);
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+        when(mockStatement.executeQuery()).thenThrow(new SQLException("database error"));
+        try(MockedStatic<DatabaseConnection> mockedDatabaseConnection = mockStatic(DatabaseConnection.class)) {
+            mockedDatabaseConnection.when(DatabaseConnection::getConnection).thenReturn(mockConnection);
+            List<BorrowTransaction> result = BorrowTransaction.getResource("Some Resource");
+            assertTrue(result.isEmpty(), "Expected empty result due to SQLException");
+        }
+    }
+    
+} 
 
     
 

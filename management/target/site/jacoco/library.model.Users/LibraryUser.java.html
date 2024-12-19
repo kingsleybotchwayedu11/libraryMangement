@@ -41,8 +41,8 @@ abstract class LibraryUser implements DatabaseOperationInterface {
     }
 
     public void setId(String id) {
-<span class="fc" id="L44">        this.id = id;</span>
-<span class="fc" id="L45">    }</span>
+<span class="nc" id="L44">        this.id = id;</span>
+<span class="nc" id="L45">    }</span>
 
     // Getter and Setter for role
     public String getRole() {
@@ -50,8 +50,8 @@ abstract class LibraryUser implements DatabaseOperationInterface {
     }
 
     public void setRole(String role) {
-<span class="fc" id="L53">        this.role = role;</span>
-<span class="fc" id="L54">    }</span>
+<span class="nc" id="L53">        this.role = role;</span>
+<span class="nc" id="L54">    }</span>
 
     // Getter and Setter for address
     public String getAddress() {
@@ -97,10 +97,10 @@ abstract class LibraryUser implements DatabaseOperationInterface {
 <span class="fc" id="L97">            PreparedStatement stmt = this.getConnection().prepareStatement(sql);</span>
 <span class="fc" id="L98">            stmt.setString(1, this.id);</span>
 <span class="fc" id="L99">            int affectedRows = stmt.executeUpdate();</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">            return affectedRows &gt;= 1; // Return true if at least one row is affected</span>
-<span class="fc" id="L101">        } catch (Exception ex) {</span>
-<span class="fc" id="L102">            ex.printStackTrace();</span>
-<span class="fc" id="L103">            return false;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            return affectedRows &gt;= 1; // Return true if at least one row is affected</span>
+<span class="nc" id="L101">        } catch (Exception ex) {</span>
+<span class="nc" id="L102">            ex.printStackTrace();</span>
+<span class="nc" id="L103">            return false;</span>
         }
     }
 }

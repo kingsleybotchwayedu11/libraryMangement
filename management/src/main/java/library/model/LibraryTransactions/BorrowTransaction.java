@@ -5,15 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import library.controllers.StatusReport;
-import library.model.LibraryResource.LibraryResource;
-import library.model.Users.*;
+
 import library.utils.databaseOperations.DatabaseConnection;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BorrowTransaction extends LibraryTransaction {
     // The borrowed item (book, magazine, or other resources)
@@ -49,18 +46,12 @@ public class BorrowTransaction extends LibraryTransaction {
         return borrowedItemId;
     }
 
-    public void setBorrowedItem(String borrowedItemId) {
-        this.borrowedItemId = borrowedItemId;
-    }
 
     //Getters and Setters for borrower
     public String getBorrower() {
         return borrowerId;
     }
 
-    public void setBorrower(String borrowerId) {
-        this.borrowerId = borrowerId;
-    }
 
     // Getters and Setters for expectedReturnDate
     public LocalDateTime getExpectedReturnDate() {
@@ -76,18 +67,14 @@ public class BorrowTransaction extends LibraryTransaction {
         return borrowedDate;
     }
 
-    public void setBorrowedDate(LocalDateTime borrowedDate) {
-        this.borrowedDate = borrowedDate;
-    }
+    
 
     // Getters and Setters for issuedLibrarian
     public String getIssuedLibrarian() {
         return issuedLibrarianId;
     }
 
-    public void setIssuedLibrarian(String issuedLibrarianId) {
-        this.issuedLibrarianId = issuedLibrarianId;
-    }
+   
 
     // Getters and Setters for isTransactionClosed
     public String getStatus() {
@@ -166,14 +153,14 @@ public class BorrowTransaction extends LibraryTransaction {
     }
 
     public static List<BorrowTransaction> getAll() throws SQLException{
-        List<BorrowTransaction> overdueTransactions = new ArrayList<>();
+        List<BorrowTransaction> transactions = new ArrayList<>();
         String query =  "SELECT * FROM BorrowingTransaction;";
         PreparedStatement stm  = DatabaseConnection.getConnection().prepareStatement(query);
         ResultSet overdueEntries = stm.executeQuery();
         while (overdueEntries.next()) {
-            overdueTransactions.add(formBorrowTransactionObject(overdueEntries));
+            transactions.add(formBorrowTransactionObject(overdueEntries));
         }
-        return overdueTransactions;
+        return transactions;
     }
 
     public static List<BorrowTransaction> getUser(String memberCardID)  throws SQLException{

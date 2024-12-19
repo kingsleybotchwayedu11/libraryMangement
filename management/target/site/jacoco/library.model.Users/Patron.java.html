@@ -78,7 +78,7 @@ public class Patron extends LibraryUser {
  
 
     @Override
-    public boolean saveToDatabase() throws SQLException {
+    public  boolean saveToDatabase() throws SQLException {
             // Check if the Patron already exists
 <span class="fc" id="L83">            boolean patronExists = this.checkIfUserExist();</span>
 <span class="fc" id="L84">            PreparedStatement stmt = null;</span>

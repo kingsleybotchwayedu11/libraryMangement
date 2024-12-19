@@ -1,6 +1,7 @@
 package library.views;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import library.App;
-import library.controllers.BooksController;
 import library.controllers.StatusReport;
+import library.controllers.BooksController;
 import library.model.LibraryResource.*;
 import javafx.scene.Scene;
 
@@ -62,8 +63,8 @@ public class AddBookController {
     @FXML
     void addBook() throws SQLException{
         if(validate()) {
-            
-            StatusReport bookReport = BooksController.uploadBook(title.getText(),locationBook.getText(), toalCop, author.getText(), genre.getSelectionModel().getSelectedItem());
+            Book newBook = new Book(UUID.randomUUID().toString(),title.getText(),locationBook.getText(), toalCop, 0,author.getText(), genre.getSelectionModel().getSelectedItem());
+            StatusReport bookReport = BooksController.uploadBook(newBook);
             if(bookReport.getOperationStatus()) {
                 Book book = (Book) bookReport.getOperationEntity();
                 report.setText("Resource Saved Successfully\nId :" + book.getId());
