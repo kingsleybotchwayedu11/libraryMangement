@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import library.App;
 import library.controllers.StatusReport;
-import library.controllers.TransactionController;
+import library.controllers.transactionController.TransactionController;
 import javafx.stage.Stage;
 
 public class ReservView {

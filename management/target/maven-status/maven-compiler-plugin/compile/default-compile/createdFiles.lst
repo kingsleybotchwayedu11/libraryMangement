@@ -1,7 +1,6 @@
 library\utils\databaseOperations\DatabaseOperationInterface.class
 library\views\AddBookController.class
 library\utils\databaseOperations\DatabaseConnection.class
-library\controllers\TransactionController.class
 library\model\LibraryResource\Genre.class
 library\controllers\UserController.class
 module-info.class

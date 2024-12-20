@@ -2,7 +2,6 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 management,library.controllers,StatusReport,0,30,0,0,0,12,0,5,0,5
 management,library.controllers,UserController,14,50,2,6,2,10,3,4,1,2
 management,library.controllers,BooksController,0,32,0,2,0,8,0,7,0,6
-management,library.controllers,TransactionController,214,0,20,0,55,0,14,0,4,0
 management,library,App,38,0,0,0,11,0,5,0,5,0
 management,library.utils.databaseOperations,DatabaseOperationInterface,0,2,0,0,0,1,0,1,0,1
 management,library.utils.databaseOperations,DatabaseConnection,0,13,0,0,0,4,0,3,0,3

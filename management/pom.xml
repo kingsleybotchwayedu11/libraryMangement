@@ -119,11 +119,20 @@
     </executions>
       <configuration>
         <excludes>
-            <exclude>**/library/views/**</exclude>
-            <exclude>**/library/controllers/TransactionController.java</exclude>
-            <exclude>**/library/App.java</exclude>
-            <exclude>**/**get**()</exclude>
-            <exclude>**/**set**()</exclude>
+            <!-- Exclude the entire 'views' package in library -->
+                            <exclude>**/library/views/**</exclude>
+
+                            <!-- Exclude the TransactionController class -->
+                            <exclude>**/library/controllers/transactionController/**</exclude>
+
+                            <!-- Exclude App.java -->
+                            <exclude>**/library/App.java</exclude>
+
+                            <!-- Exclude any getter methods (name-based exclusion) -->
+                            <exclude>**/*get*()</exclude>
+
+                            <!-- Exclude any setter methods (name-based exclusion) -->
+                            <exclude>**/*set*()</exclude>
         </excludes>
     </configuration>
 </plugin>

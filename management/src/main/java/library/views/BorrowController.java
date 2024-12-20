@@ -12,7 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import library.App;
 import library.controllers.StatusReport;
-import library.controllers.TransactionController;
+import library.controllers.transactionController.TransactionController;
 import library.model.LibraryTransactions.BorrowTransaction;
 import library.utils.sessions.LibrarianSession;
 import javafx.stage.*;
