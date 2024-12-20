@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 management,library.controllers,StatusReport,0,30,0,0,0,12,0,5,0,5
 management,library.controllers,UserController,14,50,2,6,2,10,3,4,1,2
 management,library.controllers,BooksController,0,32,0,2,0,8,0,7,0,6
-management,library.controllers,TransactionController,211,0,20,0,55,0,14,0,4,0
+management,library.controllers,TransactionController,214,0,20,0,55,0,14,0,4,0
 management,library,App,38,0,0,0,11,0,5,0,5,0
 management,library.utils.databaseOperations,DatabaseOperationInterface,0,2,0,0,0,1,0,1,0,1
 management,library.utils.databaseOperations,DatabaseConnection,0,13,0,0,0,4,0,3,0,3
@@ -13,8 +13,8 @@ management,library.model.LibraryTransactions,Reservation,0,241,0,10,0,67,0,17,0,
 management,library.model.Users,Librarian,0,197,0,6,0,44,0,10,0,7
 management,library.model.Users,Patron,0,246,0,10,0,53,0,12,0,7
 management,library.model.Users,LibraryUser,14,101,1,1,7,33,3,14,2,14
-management,library.utils.BorrowingQue,BorrowingQue,1,54,1,5,0,11,1,6,0,4
+management,library.utils.BorrowingQue,BorrowingQue,1,55,1,5,0,11,1,6,0,4
 management,library.utils.sessions,LibrarianSession,0,8,0,0,0,4,0,3,0,3
 management,library.model.LibraryResource,Genre,3,71,0,2,1,23,1,6,1,5
-management,library.model.LibraryResource,LibraryResource,0,76,0,2,0,24,0,15,0,14
+management,library.model.LibraryResource,LibraryResource,0,78,0,2,0,24,0,15,0,14
 management,library.model.LibraryResource,Book,0,285,0,10,0,75,0,16,0,11

@@ -10,7 +10,7 @@ import java.util.Queue;
 <span class="fc" id="L10">    public static HashMap&lt;String, Queue&lt;String&gt;&gt; borrowQue = new HashMap&lt;&gt;();</span>
 
    
-    public static void addToQue(String resourceId, String reservationId) {
+    public static boolean addToQue(String resourceId, String reservationId) {
         // Check if the resource already has a queue.
 <span class="fc bfc" id="L15" title="All 2 branches covered.">        if (borrowQue.containsKey(resourceId)) {</span>
             // If a queue exists, add the reservation ID to it.
@@ -21,15 +21,16 @@ import java.util.Queue;
 <span class="fc" id="L21">            resourceQue.add(reservationId);</span>
 <span class="fc" id="L22">            borrowQue.put(resourceId, resourceQue);</span>
         }
-<span class="fc" id="L24">    }</span>
+<span class="fc" id="L24">        return true;</span>
+    }
 
    
     public static String getFirstPerson(String resourceId) {
         // Check if the resource has an existing queue.
-<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (!borrowQue.containsKey(resourceId)) {</span>
-<span class="fc" id="L30">            return null; </span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (!borrowQue.containsKey(resourceId)) {</span>
+<span class="fc" id="L31">            return null; </span>
         } else {
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            return borrowQue.get(resourceId).peek() != null ? borrowQue.get(resourceId).remove() : null;</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            return borrowQue.get(resourceId).peek() != null ? borrowQue.get(resourceId).remove() : null;</span>
         }
     }
 }

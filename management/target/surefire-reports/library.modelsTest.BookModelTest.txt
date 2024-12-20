@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: library.modelsTest.BookModelTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.429 s - in library.modelsTest.BookModelTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.4 s - in library.modelsTest.BookModelTest

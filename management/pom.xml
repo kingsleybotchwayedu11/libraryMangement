@@ -120,7 +120,8 @@
       <configuration>
         <excludes>
             <exclude>**/library/views/**</exclude>
-            <exclude>**/library</exclude>
+            <exclude>**/library/controllers/TransactionController.java</exclude>
+            <exclude>**/library/App.java</exclude>
             <exclude>**/**get**()</exclude>
             <exclude>**/**set**()</exclude>
         </excludes>

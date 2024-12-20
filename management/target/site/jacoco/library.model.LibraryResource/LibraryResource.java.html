@@ -28,49 +28,51 @@ public abstract class LibraryResource implements DatabaseOperationInterface {
     public String getTitle() {
 <span class="fc" id="L29">        return title;</span>
     }
-    public void incrementTotalBorrowed(){
+    public boolean incrementTotalBorrowed(){
 <span class="fc" id="L32">        totalBorrowed += 1;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L33">        return true;</span>
+    }
 
-    public void decrementTotalBorrowed(){
-<span class="fc" id="L36">        totalBorrowed -= 1;</span>
-<span class="fc" id="L37">    }</span>
+    public boolean decrementTotalBorrowed(){
+<span class="fc" id="L37">        totalBorrowed -= 1;</span>
+<span class="fc" id="L38">        return true;</span>
+    }
 
     public void setTitle(String title) {
-<span class="fc" id="L40">        this.title = title;</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L42">        this.title = title;</span>
+<span class="fc" id="L43">    }</span>
 
     public String getId () {
-<span class="fc" id="L44">        return id;</span>
+<span class="fc" id="L46">        return id;</span>
     }
     // Getter and Setter for location
     public String getLocation() {
-<span class="fc" id="L48">        return location;</span>
+<span class="fc" id="L50">        return location;</span>
     }
 
   
     // Getter and Setter for totalCopies
     public int getTotalCopies() {
-<span class="fc" id="L54">        return totalCopies;</span>
+<span class="fc" id="L56">        return totalCopies;</span>
     }
 
     // Getter and Setter for totalBorrowed
     public int getTotalBorrowed() {
-<span class="fc" id="L59">        return totalBorrowed;</span>
+<span class="fc" id="L61">        return totalBorrowed;</span>
     }
 
     public void setTotalBorrowed(int totalBorrowed) {
-<span class="fc" id="L63">        this.totalBorrowed = totalBorrowed;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L65">        this.totalBorrowed = totalBorrowed;</span>
+<span class="fc" id="L66">    }</span>
 
     // Getter and Setter for resourceType
     public String getResourceType() {
-<span class="fc" id="L68">        return resourceType;</span>
+<span class="fc" id="L70">        return resourceType;</span>
     }
 
     // Additional method to calculate remaining copies (optional)
     public int getRemainingCopies() {
-<span class="fc" id="L73">        return totalCopies - totalBorrowed;</span>
+<span class="fc" id="L75">        return totalCopies - totalBorrowed;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
